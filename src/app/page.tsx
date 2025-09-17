@@ -1,174 +1,319 @@
 "use client";
 
+import { useSession } from "@/lib/auth-client";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { SetupChecklist } from "@/components/setup-checklist";
-import { useDiagnostics } from "@/hooks/use-diagnostics";
-import { StarterPromptModal } from "@/components/starter-prompt-modal";
-import { Video, Shield, Database, Palette, Bot } from "lucide-react";
+import { SignInButton } from "@/components/auth/sign-in-button";
+import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { 
+  Zap, 
+  Brain, 
+  Filter, 
+  Calendar, 
+  CheckCircle, 
+  CheckSquare,
+  BarChart3, 
+  Sparkles, 
+  ArrowRight,
+  Star,
+  LogIn
+} from "lucide-react";
 
 export default function Home() {
-  const { isAuthReady, isAiReady, loading } = useDiagnostics();
-  return (
-    <main className="flex-1 container mx-auto px-4 py-12">
-      <div className="max-w-4xl mx-auto text-center space-y-8">
-        <div className="space-y-4">
-          <div className="flex items-center justify-center gap-3 mb-2">
-            <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10">
-              <Bot className="h-7 w-7 text-primary" />
+  const { data: session, isPending } = useSession();
+
+  if (isPending) {
+    return (
+      <main className="flex-1 container mx-auto px-6 py-16">
+        <div className="max-w-4xl mx-auto">
+          <div className="animate-pulse space-y-8">
+            <div className="h-12 bg-muted rounded-xl"></div>
+            <div className="h-64 bg-muted rounded-xl"></div>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="h-32 bg-muted rounded-xl"></div>
+              <div className="h-32 bg-muted rounded-xl"></div>
+              <div className="h-32 bg-muted rounded-xl"></div>
             </div>
-            <h1 className="text-5xl font-bold tracking-tight bg-gradient-to-r from-primary via-primary/90 to-primary/70 bg-clip-text text-transparent">
-              Starter Kit
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  if (!session) {
+    return (
+      <main className="flex-1 container mx-auto px-6 py-16">
+        <div className="max-w-4xl mx-auto text-center space-y-12">
+          {/* Hero Section */}
+          <div className="space-y-6">
+            <div className="flex items-center justify-center gap-4 mb-8">
+              <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 shadow-sm">
+                <CheckSquare className="h-8 w-8 text-primary" />
+              </div>
+              <h1 className="text-5xl font-bold tracking-tight bg-gradient-to-r from-primary via-primary/90 to-primary/70 bg-clip-text text-transparent">
+                TaskFlow
+              </h1>
+            </div>
+            <h2 className="text-3xl font-semibold text-foreground mb-4">
+              Smart Task Management with AI
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Organize your tasks with intelligent categorization and priority suggestions powered by AI
+            </p>
+          </div>
+
+          {/* Features Grid */}
+          <div className="grid md:grid-cols-3 gap-6 text-left">
+            <Card className="border-0 shadow-sm hover:shadow-md transition-shadow duration-200">
+              <CardHeader className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <Sparkles className="h-5 w-5 text-primary" />
+                  </div>
+                  <CardTitle className="text-lg">AI Categorization</CardTitle>
+                </div>
+                <CardDescription className="text-sm leading-relaxed">
+                  Automatically categorize and prioritize your tasks using advanced AI
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="border-0 shadow-sm hover:shadow-md transition-shadow duration-200">
+              <CardHeader className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <CheckSquare className="h-5 w-5 text-primary" />
+                  </div>
+                  <CardTitle className="text-lg">Smart Organization</CardTitle>
+                </div>
+                <CardDescription className="text-sm leading-relaxed">
+                  Filter, sort, and manage your todos with powerful organization tools
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="border-0 shadow-sm hover:shadow-md transition-shadow duration-200">
+              <CardHeader className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <LogIn className="h-5 w-5 text-primary" />
+                  </div>
+                  <CardTitle className="text-lg">Secure & Personal</CardTitle>
+                </div>
+                <CardDescription className="text-sm leading-relaxed">
+                  Your tasks are private and secure with user authentication
+                </CardDescription>
+              </CardHeader>
+            </Card>
+          </div>
+
+          {/* CTA Section */}
+          <div className="space-y-6 pt-8">
+            <p className="text-muted-foreground text-lg">
+              Sign in to start managing your tasks with AI-powered insights
+            </p>
+            <SignInButton />
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+    return (
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <section className="container mx-auto px-6 py-20 text-center">
+        <div className="max-w-5xl mx-auto space-y-8">
+          <div className="flex items-center justify-center gap-4 mb-8">
+            <div className="p-4 rounded-2xl bg-primary/10 shadow-sm">
+              <Zap className="h-10 w-10 text-primary" />
+            </div>
+            <h1 className="text-6xl font-bold text-primary">
+              TaskFlow
             </h1>
           </div>
-          <h2 className="text-2xl font-semibold text-muted-foreground">
-            Complete Boilerplate for AI Applications
-          </h2>
-          <p className="text-xl text-muted-foreground">
-            A complete agentic coding boilerplate with authentication, database, AI
-            integration, and modern tooling for building AI-powered applications
-          </p>
-        </div>
-
-        {/* YouTube Tutorial Video */}
-        <div className="space-y-4">
-          <h3 className="text-2xl font-semibold flex items-center justify-center gap-2">
-            <Video className="h-6 w-6" />
-            Video Tutorial
-          </h3>
-          <p className="text-muted-foreground">
-            Watch the complete walkthrough of this agentic coding boilerplate:
-          </p>
-          <div className="relative w-full max-w-3xl mx-auto">
-            <div className="relative pb-[56.25%] h-0 overflow-hidden rounded-lg border">
-              <iframe
-                className="absolute top-0 left-0 w-full h-full"
-                src="https://www.youtube.com/embed/T0zFZsr_d0Q"
-                title="Agentic Coding Boilerplate Tutorial"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
+          
+          <div className="space-y-6">
+            <h2 className="text-3xl font-semibold text-foreground">
+              The AI-Powered Task Management Revolution
+            </h2>
+            
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              Transform your productivity with intelligent task categorization, smart prioritization, 
+              and seamless workflow management. Let AI handle the organization while you focus on what matters.
+            </p>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+            {session ? (
+              <Button asChild size="lg" className="text-lg px-8 py-4 shadow-sm">
+                <Link href="/dashboard" className="flex items-center gap-2">
+                  Go to Dashboard
+                  <ArrowRight className="h-5 w-5" />
+                </Link>
+              </Button>
+            ) : (
+              <Button size="lg" className="text-lg px-8 py-4 shadow-sm">
+                Get Started Free
+                <Sparkles className="h-5 w-5 ml-2" />
+              </Button>
+            )}
+            
+            <Button variant="outline" size="lg" className="text-lg px-8 py-4 shadow-sm">
+              Watch Demo
+            </Button>
+          </div>
+          
+          <div className="flex flex-wrap items-center justify-center gap-8 pt-8 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <Star className="h-4 w-4 fill-primary text-primary" />
+              <span>4.9/5 Rating</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle className="h-4 w-4 text-green-500" />
+              <span>10,000+ Users</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Zap className="h-4 w-4 text-primary" />
+              <span>AI-Powered</span>
             </div>
           </div>
         </div>
+      </section>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
-          <div className="p-6 border rounded-lg">
-            <h3 className="font-semibold mb-2 flex items-center gap-2">
-              <Shield className="h-4 w-4" />
-              Authentication
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              Better Auth with Google OAuth integration
+      {/* Features Section */}
+      <section className="bg-muted/30 py-20">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16 space-y-4">
+            <h2 className="text-4xl font-bold text-foreground">Why Choose TaskFlow?</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              Experience the future of task management with features designed to supercharge your productivity
             </p>
           </div>
-          <div className="p-6 border rounded-lg">
-            <h3 className="font-semibold mb-2 flex items-center gap-2">
-              <Database className="h-4 w-4" />
-              Database
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              Drizzle ORM with PostgreSQL setup
-            </p>
-          </div>
-          <div className="p-6 border rounded-lg">
-            <h3 className="font-semibold mb-2 flex items-center gap-2">
-              <Bot className="h-4 w-4" />
-              AI Ready
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              Vercel AI SDK with OpenAI integration
-            </p>
-          </div>
-          <div className="p-6 border rounded-lg">
-            <h3 className="font-semibold mb-2 flex items-center gap-2">
-              <Palette className="h-4 w-4" />
-              UI Components
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              shadcn/ui with Tailwind CSS
-            </p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            <Card className="border-0 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+              <CardHeader className="space-y-4">
+                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <Brain className="h-7 w-7 text-primary" />
+                </div>
+                <CardTitle className="text-xl">AI-Powered Categorization</CardTitle>
+                <CardDescription className="text-base leading-relaxed">
+                  Let our intelligent AI automatically categorize your tasks into Work, Personal, Shopping, Health, and more. No manual sorting required.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+            
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+              <CardHeader>
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                  <Filter className="h-6 w-6 text-primary" />
+                </div>
+                <CardTitle>Smart Filtering & Search</CardTitle>
+                <CardDescription>
+                  Find any task instantly with powerful search and filtering options. Sort by priority, category, due date, or completion status.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+            
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+              <CardHeader>
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                  <Calendar className="h-6 w-6 text-primary" />
+                </div>
+                <CardTitle>Due Date Management</CardTitle>
+                <CardDescription>
+                  Never miss a deadline with intelligent due date tracking, overdue highlighting, and upcoming task notifications.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+            
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+              <CardHeader>
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                  <CheckCircle className="h-6 w-6 text-primary" />
+                </div>
+                <CardTitle>Priority Management</CardTitle>
+                <CardDescription>
+                  Color-coded priority levels (High, Medium, Low) help you focus on what matters most and maintain optimal workflow.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+            
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+              <CardHeader>
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                  <BarChart3 className="h-6 w-6 text-primary" />
+                </div>
+                <CardTitle>Progress Analytics</CardTitle>
+                <CardDescription>
+                  Track your productivity with detailed statistics, completion rates, and category distribution insights.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+            
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+              <CardHeader>
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                  <Sparkles className="h-6 w-6 text-primary" />
+                </div>
+                <CardTitle>Beautiful Interface</CardTitle>
+                <CardDescription>
+                  Enjoy a clean, modern interface with dark/light mode support, smooth animations, and responsive design.
+                </CardDescription>
+              </CardHeader>
+            </Card>
           </div>
         </div>
+      </section>
 
-        <div className="space-y-6 mt-12">
-          <SetupChecklist />
-
-          <h3 className="text-2xl font-semibold">Next Steps</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
-            <div className="p-4 border rounded-lg">
-              <h4 className="font-medium mb-2">
-                1. Set up environment variables
-              </h4>
-              <p className="text-sm text-muted-foreground mb-2">
-                Copy <code>.env.example</code> to <code>.env.local</code> and
-                configure:
+      {/* CTA Section */}
+      <section className="py-20">
+        <div className="container mx-auto px-6 text-center">
+          <div className="max-w-4xl mx-auto space-y-8">
+            <div className="space-y-4">
+              <h2 className="text-4xl font-bold text-foreground">
+                Ready to Transform Your Productivity?
+              </h2>
+              <p className="text-xl text-muted-foreground leading-relaxed">
+                Join thousands of users who have already revolutionized their task management with TaskFlow's AI-powered features.
               </p>
-              <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
-                <li>POSTGRES_URL (PostgreSQL connection string)</li>
-                <li>GOOGLE_CLIENT_ID (OAuth credentials)</li>
-                <li>GOOGLE_CLIENT_SECRET (OAuth credentials)</li>
-                <li>OPENAI_API_KEY (for AI functionality)</li>
-              </ul>
             </div>
-            <div className="p-4 border rounded-lg">
-              <h4 className="font-medium mb-2">2. Set up your database</h4>
-              <p className="text-sm text-muted-foreground mb-2">
-                Run database migrations:
-              </p>
-              <div className="space-y-2">
-                <code className="text-sm bg-muted p-2 rounded block">
-                  npm run db:generate
-                </code>
-                <code className="text-sm bg-muted p-2 rounded block">
-                  npm run db:migrate
-                </code>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+              {session ? (
+                <Button asChild size="lg" className="text-lg px-8 py-4 shadow-sm">
+                  <Link href="/dashboard" className="flex items-center gap-2">
+                    Open Dashboard
+                    <ArrowRight className="h-5 w-5" />
+                  </Link>
+                </Button>
+              ) : (
+                <Button size="lg" className="text-lg px-8 py-4 shadow-sm">
+                  Start Free Today
+                  <Sparkles className="h-5 w-5 ml-2" />
+                </Button>
+              )}
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-12">
+              <div className="text-center space-y-2">
+                <div className="text-3xl font-bold text-primary">10,000+</div>
+                <div className="text-muted-foreground">Active Users</div>
+              </div>
+              <div className="text-center space-y-2">
+                <div className="text-3xl font-bold text-primary">99.9%</div>
+                <div className="text-muted-foreground">Uptime</div>
+              </div>
+              <div className="text-center space-y-2">
+                <div className="text-3xl font-bold text-primary">24/7</div>
+                <div className="text-muted-foreground">Support</div>
               </div>
             </div>
-            <div className="p-4 border rounded-lg">
-              <h4 className="font-medium mb-2">3. Try the features</h4>
-              <div className="space-y-2">
-                {loading || !isAuthReady ? (
-                  <Button size="sm" className="w-full" disabled={true}>
-                    View Dashboard
-                  </Button>
-                ) : (
-                  <Button asChild size="sm" className="w-full">
-                    <Link href="/dashboard">View Dashboard</Link>
-                  </Button>
-                )}
-                {loading || !isAiReady ? (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full"
-                    disabled={true}
-                  >
-                    Try AI Chat
-                  </Button>
-                ) : (
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="sm"
-                    className="w-full"
-                  >
-                    <Link href="/chat">Try AI Chat</Link>
-                  </Button>
-                )}
-              </div>
-            </div>
-            <div className="p-4 border rounded-lg">
-              <h4 className="font-medium mb-2">4. Start building</h4>
-              <p className="text-sm text-muted-foreground mb-3">
-                Customize the components, add your own pages, and build your
-                application on top of this solid foundation.
-              </p>
-              <StarterPromptModal />
-            </div>
           </div>
         </div>
-      </div>
-    </main>
+      </section>
+    </div>
   );
 }
