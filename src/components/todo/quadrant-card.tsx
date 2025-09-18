@@ -77,14 +77,18 @@ export function QuadrantCard({
   };
 
   const handleDrop = async (e: React.DragEvent) => {
+    console.log("Drop event triggered on quadrant:", quadrant);
     e.preventDefault();
     e.stopPropagation();
     setDraggedOver(false);
     
     const todoId = e.dataTransfer.getData("text/plain");
+    console.log("Dropped todo ID:", todoId);
     if (todoId && todoId.trim()) {
       try {
+        console.log("Calling onQuadrantChange with:", todoId, quadrant);
         await onQuadrantChange(todoId, quadrant);
+        console.log("Successfully moved task to:", quadrant);
       } catch (error) {
         console.error("Failed to move task:", error);
       }
@@ -92,6 +96,7 @@ export function QuadrantCard({
   };
 
   const handleTodoDragStart = (e: React.DragEvent, todoId: string) => {
+    console.log("Drag start:", todoId);
     e.stopPropagation();
     e.dataTransfer.setData("text/plain", todoId);
     e.dataTransfer.effectAllowed = "move";
@@ -157,15 +162,21 @@ export function QuadrantCard({
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
+      role="region"
+      aria-label={`${config.title} quadrant with ${todos.length} tasks`}
+      aria-describedby={`quadrant-${config.title.toLowerCase().replace(/\s+/g, '-')}-description`}
     >
       {/* Quadrant Header */}
       <div className={`${config.headerColor} rounded-lg p-2 sm:p-3 mb-3 sm:mb-4`}>
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-base sm:text-lg">{config.icon}</span>
+          <span className="text-base sm:text-lg" aria-hidden="true">{config.icon}</span>
           <h3 className="font-bold text-base sm:text-lg">{config.title}</h3>
         </div>
         <p className="text-xs sm:text-sm font-medium opacity-90">{config.subtitle}</p>
         <p className="text-xs opacity-75 mt-1 hidden sm:block">{config.description}</p>
+      </div>
+      <div id={`quadrant-${config.title.toLowerCase().replace(/\s+/g, '-')}-description`} className="sr-only">
+        This is the {config.title} quadrant containing tasks that are {config.title.toLowerCase()}. You can drag and drop tasks here to categorize them.
       </div>
 
       {/* Task Count */}
@@ -192,6 +203,20 @@ export function QuadrantCard({
               className={`bg-white rounded-lg p-3 sm:p-3 border shadow-sm cursor-move hover:shadow-md transition-all duration-200 select-none touch-manipulation min-h-[60px] sm:min-h-auto ${
                 todo.completed ? "opacity-60" : ""
               }`}
+              role="button"
+              tabIndex={0}
+              aria-label={`Drag to move task: ${todo.title}`}
+              aria-describedby={`task-${todo.id}-details`}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  // Focus management for keyboard users
+                  const nextQuadrant = document.querySelector('[role="region"]:not(:focus-within)');
+                  if (nextQuadrant) {
+                    (nextQuadrant as HTMLElement).focus();
+                  }
+                }
+              }}
             >
               {/* Task Header */}
               <div className="flex items-start justify-between gap-2 mb-2">
@@ -203,8 +228,9 @@ export function QuadrantCard({
                         ? "bg-green-500 border-green-500 text-white"
                         : "border-gray-300 hover:border-green-400"
                     }`}
+                    aria-label={todo.completed ? `Mark "${todo.title}" as incomplete` : `Mark "${todo.title}" as complete`}
                   >
-                    {todo.completed && <Check size={14} className="sm:w-3 sm:h-3" />}
+                    {todo.completed && <Check size={14} className="sm:w-3 sm:h-3" aria-hidden="true" />}
                   </button>
                   
                   {editingTodo === todo.id ? (
@@ -250,14 +276,16 @@ export function QuadrantCard({
                     <button
                       onClick={() => handleStartEdit(todo)}
                       className="p-2 sm:p-1 text-gray-400 hover:bg-accent hover:text-accent-foreground rounded transition-colors touch-manipulation"
+                      aria-label={`Edit task "${todo.title}"`}
                     >
-                      <Edit2 size={14} className="sm:w-3 sm:h-3" />
+                      <Edit2 size={14} className="sm:w-3 sm:h-3" aria-hidden="true" />
                     </button>
                     <button
                       onClick={() => onDeleteTodo(todo.id)}
                       className="p-2 sm:p-1 text-gray-400 hover:bg-accent hover:text-accent-foreground rounded transition-colors touch-manipulation"
+                      aria-label={`Delete task "${todo.title}"`}
                     >
-                      <Trash2 size={14} className="sm:w-3 sm:h-3" />
+                      <Trash2 size={14} className="sm:w-3 sm:h-3" aria-hidden="true" />
                     </button>
                   </div>
                 )}
@@ -269,6 +297,16 @@ export function QuadrantCard({
                   {todo.description}
                 </p>
               )}
+              
+              {/* Hidden description for screen readers */}
+              <div id={`task-${todo.id}-details`} className="sr-only">
+                Task: {todo.title}. 
+                {todo.description && `Description: ${todo.description}. `}
+                Priority: {getPriorityText(todo.priority)}. 
+                Status: {todo.completed ? 'Completed' : 'Incomplete'}.
+                {todo.dueDate && ` Due: ${format(new Date(todo.dueDate), 'PPP')}.`}
+                Urgency: {todo.urgency}/3, Importance: {todo.importance}/3.
+              </div>
 
               {/* Task Metadata */}
               <div className="flex items-center justify-between text-xs">

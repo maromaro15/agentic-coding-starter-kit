@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
+import { TouchFeedback } from "@/components/ui/loading-spinner";
 import {
   Popover,
   PopoverContent,
@@ -119,6 +120,17 @@ export function TodoItem({ todo, onUpdate, onDelete }: TodoItemProps) {
               onChange={(e) => setEditTitle(e.target.value)}
               className="font-medium h-9 sm:h-10 rounded-md border focus:border-ring focus:ring-2 focus:ring-ring/20 transition-all duration-200 text-sm sm:text-base"
               placeholder="What needs to be done?"
+              aria-label="Edit task title"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  handleSave();
+                }
+                if (e.key === 'Escape') {
+                  e.preventDefault();
+                  handleCancel();
+                }
+              }}
             />
             <Textarea
               value={editDescription}
@@ -126,6 +138,13 @@ export function TodoItem({ todo, onUpdate, onDelete }: TodoItemProps) {
               placeholder="Add some details to make it clearer..."
               rows={2}
               className="rounded-md border focus:border-ring focus:ring-2 focus:ring-ring/20 resize-none transition-all duration-200 text-sm sm:text-base"
+              aria-label="Edit task description"
+              onKeyDown={(e) => {
+                if (e.key === 'Escape') {
+                  e.preventDefault();
+                  handleCancel();
+                }
+              }}
             />
             <div className="flex gap-2 sm:gap-3">
               <Popover>
@@ -137,6 +156,7 @@ export function TodoItem({ todo, onUpdate, onDelete }: TodoItemProps) {
                       "justify-start text-left font-normal h-9 sm:h-10 rounded-2xl px-3 sm:px-4 border-2 border hover:bg-accent hover:text-accent-foreground transition-all duration-200 text-xs sm:text-sm touch-manipulation",
                       !editDueDate && "text-muted-foreground"
                     )}
+                    aria-label={editDueDate ? `Due date: ${format(editDueDate, "PPP")}` : "Set due date"}
                   >
                     <CalendarIcon className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4 text-[#F4A261]" />
                     <span className="hidden xs:inline">{editDueDate ? format(editDueDate, "PPP") : "📅 Pick a due date"}</span>
@@ -154,13 +174,13 @@ export function TodoItem({ todo, onUpdate, onDelete }: TodoItemProps) {
               </Popover>
             </div>
             <div className="flex flex-col xs:flex-row gap-2 sm:gap-3">
-              <Button size="default" onClick={handleSave} className="bg-primary hover:bg-primary-hover hover:text-primary-hover-foreground text-primary-foreground font-medium px-3 sm:px-4 py-2 rounded-md transition-all duration-200 text-sm sm:text-base touch-manipulation h-9 sm:h-10">
-                <Save className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+              <Button size="default" onClick={handleSave} className="bg-primary hover:bg-primary-hover hover:text-primary-hover-foreground text-primary-foreground font-medium px-3 sm:px-4 py-2 rounded-md transition-all duration-200 text-sm sm:text-base touch-manipulation h-9 sm:h-10" aria-label="Save changes to task">
+                <Save className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" aria-hidden="true" />
                 <span className="hidden xs:inline">Save Changes</span>
                 <span className="xs:hidden">Save</span>
               </Button>
-              <Button size="default" variant="outline" onClick={handleCancel} className="border hover:bg-outline-hover hover:text-outline-hover-foreground font-medium px-3 sm:px-4 py-2 rounded-md transition-all duration-200 text-sm sm:text-base touch-manipulation h-9 sm:h-10">
-                <X className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+              <Button size="default" variant="outline" onClick={handleCancel} className="border hover:bg-outline-hover hover:text-outline-hover-foreground font-medium px-3 sm:px-4 py-2 rounded-md transition-all duration-200 text-sm sm:text-base touch-manipulation h-9 sm:h-10" aria-label="Cancel editing and discard changes">
+                <X className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" aria-hidden="true" />
                 <span className="hidden xs:inline">Cancel</span>
                 <span className="xs:hidden">Cancel</span>
               </Button>
@@ -173,6 +193,7 @@ export function TodoItem({ todo, onUpdate, onDelete }: TodoItemProps) {
                 checked={todo.completed}
                 onCheckedChange={handleToggleComplete}
                 className="mt-1 sm:mt-1.5 h-5 w-5 sm:h-6 sm:w-6 rounded-lg border-2 border-[#E7E5E4] data-[state=checked]:bg-gradient-to-r data-[state=checked]:from-[#F4A261] data-[state=checked]:to-[#E76F51] data-[state=checked]:border-[#F4A261] transition-all duration-200 touch-manipulation"
+                aria-label={todo.completed ? `Mark "${todo.title}" as incomplete` : `Mark "${todo.title}" as complete`}
               />
               <div className="flex-1 min-w-0">
                 <h3 className={cn(
@@ -191,23 +212,29 @@ export function TodoItem({ todo, onUpdate, onDelete }: TodoItemProps) {
                 )}
               </div>
               <div className="flex gap-1 sm:gap-2">
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => setIsEditing(true)}
-                  disabled={todo.completed}
-                  className="h-8 w-8 sm:h-10 sm:w-10 p-0 rounded-md hover:bg-accent hover:scale-105 transition-all duration-200 touch-manipulation"
-                >
-                  <Edit2 className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground hover:text-foreground" />
-                </Button>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => onDelete(todo.id)}
-                  className="h-8 w-8 sm:h-10 sm:w-10 p-0 rounded-md hover:bg-destructive/10 hover:scale-105 transition-all duration-200 touch-manipulation"
-                >
-                  <Trash2 className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground hover:text-destructive" />
-                </Button>
+                <TouchFeedback>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => setIsEditing(true)}
+                    disabled={todo.completed}
+                    className="h-8 w-8 sm:h-10 sm:w-10 p-0 rounded-md hover:bg-accent hover:scale-105 transition-all duration-200 touch-manipulation"
+                    aria-label={`Edit task "${todo.title}"`}
+                  >
+                    <Edit2 className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground hover:text-foreground" aria-hidden="true" />
+                  </Button>
+                </TouchFeedback>
+                <TouchFeedback>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => onDelete(todo.id)}
+                    className="h-8 w-8 sm:h-10 sm:w-10 p-0 rounded-md hover:bg-destructive/10 hover:scale-105 transition-all duration-200 touch-manipulation"
+                    aria-label={`Delete task "${todo.title}"`}
+                  >
+                    <Trash2 className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground hover:text-destructive" aria-hidden="true" />
+                  </Button>
+                </TouchFeedback>
               </div>
             </div>
 

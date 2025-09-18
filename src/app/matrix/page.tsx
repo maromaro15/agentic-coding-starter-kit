@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Plus, ArrowLeft, Filter, RotateCcw } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useSession } from "@/lib/auth-client";
+import { SignInButton } from "@/components/auth/sign-in-button";
 
 interface Todo {
   id: string;
@@ -26,6 +28,7 @@ interface Todo {
 
 export default function MatrixPage() {
   const router = useRouter();
+  const { data: session, isPending } = useSession();
   const [todos, setTodos] = useState<Todo[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddTodo, setShowAddTodo] = useState(false);
@@ -34,11 +37,15 @@ export default function MatrixPage() {
   // Fetch todos from API
   const fetchTodos = async () => {
     try {
+      console.log("Fetching todos...");
       const response = await fetch("/api/todos");
+      console.log("Response status:", response.status);
       if (response.ok) {
         const data = await response.json();
+        console.log("Fetched todos:", data.todos);
         setTodos(data.todos || []);
       } else {
+        console.error("Failed to fetch todos, status:", response.status);
         toast.error("Failed to load tasks");
       }
     } catch (error) {
@@ -52,6 +59,52 @@ export default function MatrixPage() {
   useEffect(() => {
     fetchTodos();
   }, []);
+
+  // Show loading while checking authentication
+  if (isPending) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#F7FAFC] to-[#EDF2F7] p-4 sm:p-6 lg:p-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center py-12">
+            <div 
+              className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#F4A261] mx-auto mb-4"
+              role="status"
+              aria-label="Loading"
+            ></div>
+            <p className="text-[#4A5568] text-lg" aria-live="polite">
+              Loading...
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show sign in prompt if not authenticated
+  if (!session) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 sm:p-6 lg:p-8">
+        <div className="max-w-2xl mx-auto">
+          <div className="text-center py-12">
+            <div className="mb-8">
+              <h1 className="text-3xl font-bold text-gray-900 mb-4">Eisenhower Matrix</h1>
+              <p className="text-lg text-gray-600 mb-8">
+                Please sign in to access your task matrix and use drag & drop functionality.
+              </p>
+            </div>
+            <div className="bg-white rounded-xl p-8 shadow-lg">
+              <div className="text-6xl mb-6">🔒</div>
+              <h2 className="text-xl font-semibold mb-4">Authentication Required</h2>
+              <p className="text-gray-600 mb-6">
+                Sign in to organize your tasks by urgency and importance.
+              </p>
+              <SignInButton />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // Add new todo
   const handleAddTodo = async (todoData: {
@@ -197,10 +250,19 @@ export default function MatrixPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading Eisenhower Matrix...</p>
+      <div className="min-h-screen bg-gradient-to-br from-[#F7FAFC] to-[#EDF2F7] p-4 sm:p-6 lg:p-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center py-12">
+            <div 
+              className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#F4A261] mx-auto mb-4"
+              role="status"
+              aria-label="Loading your tasks"
+            ></div>
+            <p className="text-[#4A5568] text-lg" aria-live="polite">
+              Loading your tasks...
+            </p>
+            <span className="sr-only">Please wait while we load your task matrix</span>
+          </div>
         </div>
       </div>
     );
@@ -209,7 +271,7 @@ export default function MatrixPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-2 sm:p-4">
       {/* Header */}
-      <div className="max-w-7xl mx-auto mb-4 sm:mb-6">
+      <header className="max-w-7xl mx-auto mb-4 sm:mb-6" role="banner">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
           <div className="flex items-center gap-2 sm:gap-4">
             <Button
@@ -217,6 +279,7 @@ export default function MatrixPage() {
               size="sm"
               onClick={() => router.back()}
               className="hover:bg-accent hover:text-accent-foreground transition-colors p-2 sm:px-3"
+              aria-label="Go back to previous page"
             >
               <ArrowLeft className="h-4 w-4 sm:mr-2" />
               <span className="hidden sm:inline">Back</span>
@@ -227,9 +290,9 @@ export default function MatrixPage() {
             </div>
           </div>
           
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+          <nav className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3" role="navigation" aria-label="Task filters and actions">
             {/* Filter Buttons */}
-            <div className="flex bg-white rounded-lg p-1 shadow-sm">
+            <div className="flex bg-white rounded-lg p-1 shadow-sm" role="group" aria-label="Filter tasks">
               {["all", "active", "completed"].map((filterType) => (
                 <Button
                   key={filterType}
@@ -237,6 +300,8 @@ export default function MatrixPage() {
                   size="sm"
                   onClick={() => setFilter(filterType as typeof filter)}
                   className="capitalize flex-1 sm:flex-none text-xs sm:text-sm"
+                  aria-pressed={filter === filterType}
+                  aria-label={`Show ${filterType} tasks`}
                 >
                   {filterType}
                 </Button>
@@ -244,14 +309,15 @@ export default function MatrixPage() {
             </div>
             
             {/* Action Buttons */}
-            <div className="flex gap-2">
+            <div className="flex gap-2" role="group" aria-label="Task actions">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={handleAutoCategorize}
                 className="bg-background hover:bg-accent hover:text-accent-foreground transition-colors flex-1 sm:flex-none text-xs sm:text-sm"
+                aria-label="Automatically categorize uncategorized tasks based on their urgency and importance"
               >
-                <RotateCcw className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" />
+                <RotateCcw className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" aria-hidden="true" />
                 <span className="hidden sm:inline">Auto-Categorize</span>
                 <span className="sm:hidden">Auto</span>
               </Button>
@@ -259,17 +325,18 @@ export default function MatrixPage() {
               <Button
                 onClick={() => setShowAddTodo(true)}
                 className="bg-primary hover:bg-primary-hover hover:text-primary-hover-foreground transition-colors flex-1 sm:flex-none text-xs sm:text-sm"
+                aria-label="Add a new task to the matrix"
               >
-                <Plus className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" />
+                <Plus className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" aria-hidden="true" />
                 <span className="hidden sm:inline">Add Task</span>
                 <span className="sm:hidden">Add</span>
               </Button>
             </div>
-          </div>
+          </nav>
         </div>
 
         {/* Statistics */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4 mb-4 sm:mb-6">
+        <section className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4 mb-4 sm:mb-6" role="region" aria-label="Task statistics">
           <div className="bg-white rounded-lg p-2 sm:p-4 text-center shadow-sm">
             <div className="text-lg sm:text-2xl font-bold text-gray-900">{stats.total}</div>
             <div className="text-xs sm:text-sm text-gray-600">Total Tasks</div>
@@ -294,14 +361,14 @@ export default function MatrixPage() {
             <div className="text-lg sm:text-2xl font-bold text-gray-600">{stats.do_later}</div>
             <div className="text-xs sm:text-sm text-gray-700">Do Later</div>
           </div>
-        </div>
-      </div>
+        </section>
+      </header>
 
       {/* Add Todo Modal */}
       {showAddTodo && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2 sm:p-4">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2 sm:p-4" role="dialog" aria-modal="true" aria-labelledby="add-task-title">
           <div className="bg-white rounded-lg p-3 sm:p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Add New Task</h2>
+            <h2 id="add-task-title" className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Add New Task</h2>
             <AddTodo
               onAdd={handleAddTodo}
               onCancel={() => setShowAddTodo(false)}
@@ -311,15 +378,16 @@ export default function MatrixPage() {
       )}
 
       {/* Matrix Grid */}
-      <div className="max-w-7xl mx-auto">
-        <div className="bg-white rounded-lg sm:rounded-xl shadow-lg p-2 sm:p-6">
+      <main className="max-w-7xl mx-auto" role="main">
+        <section className="bg-white rounded-lg sm:rounded-xl shadow-lg p-2 sm:p-6" aria-label="Task matrix grid">
           <MatrixGrid
             todos={filteredTodos}
             onUpdateTodo={handleUpdateTodo}
             onDeleteTodo={handleDeleteTodo}
+            loading={loading}
           />
-        </div>
-      </div>
+        </section>
+      </main>
     </div>
   );
 }

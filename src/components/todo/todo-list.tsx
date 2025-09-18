@@ -20,6 +20,7 @@ import {
   Clock,
   AlertTriangle
 } from "lucide-react";
+import { LoadingSpinner, SkeletonLoader } from "@/components/ui/loading-spinner";
 
 interface Todo {
   id: string;
@@ -40,12 +41,13 @@ interface TodoListProps {
   todos: Todo[];
   onUpdate: (id: string, updates: Partial<Todo>) => void;
   onDelete: (id: string) => void;
+  loading?: boolean;
 }
 
 type FilterType = "all" | "active" | "completed" | "overdue" | "do_first" | "schedule" | "delegate" | "do_later";
 type SortType = "created" | "priority" | "dueDate" | "title" | "urgency" | "importance" | "quadrant";
 
-export function TodoList({ todos, onUpdate, onDelete }: TodoListProps) {
+export function TodoList({ todos, onUpdate, onDelete, loading = false }: TodoListProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState<FilterType>("all");
   const [sortBy, setSortBy] = useState<SortType>("created");
@@ -271,12 +273,35 @@ export function TodoList({ todos, onUpdate, onDelete }: TodoListProps) {
       </div>
 
       {/* Todo Items */}
-      <div className="space-y-4">
-        {filteredAndSortedTodos.length === 0 ? (
+      <div className="space-y-4" role="region" aria-label="Task list" aria-live="polite">
+        {loading ? (
+          // Mobile-optimized skeleton loading
+          <div className="space-y-3 sm:space-y-4">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="bg-white rounded-xl sm:rounded-2xl border border-[#E7E5E4] p-3 sm:p-4">
+                <SkeletonLoader 
+                  lines={2} 
+                  showAvatar={false}
+                  className="mb-2 sm:mb-3"
+                />
+                <div className="flex justify-between items-center mt-3 sm:mt-4">
+                  <div className="flex gap-2">
+                    <div className="h-5 w-12 sm:h-6 sm:w-16 bg-gray-200 rounded-full animate-pulse" />
+                    <div className="h-5 w-16 sm:h-6 sm:w-20 bg-gray-200 rounded-full animate-pulse" />
+                  </div>
+                  <div className="flex gap-1 sm:gap-2">
+                    <div className="h-7 w-7 sm:h-8 sm:w-8 bg-gray-200 rounded-md animate-pulse" />
+                    <div className="h-7 w-7 sm:h-8 sm:w-8 bg-gray-200 rounded-md animate-pulse" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : filteredAndSortedTodos.length === 0 ? (
           <div className="text-center py-16 bg-gradient-to-br from-[#FEFCE8] to-[#FEF3F2] rounded-3xl border border-[#F4A5A5]/20">
             {searchQuery || filter !== "all" || selectedCategory !== "all" ? (
               <div className="space-y-6">
-                <div className="text-6xl mb-4">🔍</div>
+                <div className="text-6xl mb-4" aria-hidden="true">🔍</div>
                 <div className="space-y-3">
                   <h3 className="text-xl font-bold text-[#57534E] font-rounded">No tasks match your search! 🤔</h3>
                   <p className="text-[#78716C] font-rounded">Try adjusting your filters or search terms to find what you're looking for.</p>
@@ -290,13 +315,14 @@ export function TodoList({ todos, onUpdate, onDelete }: TodoListProps) {
                     setFilter("all");
                     setSelectedCategory("all");
                   }}
+                  aria-label="Clear all filters and show all tasks"
                 >
                   ✨ Clear Filters
                 </Button>
               </div>
             ) : (
               <div className="space-y-6">
-                <div className="text-6xl mb-4">📝</div>
+                <div className="text-6xl mb-4" aria-hidden="true">📝</div>
                 <div className="space-y-3">
                   <h3 className="text-xl font-bold text-[#57534E] font-rounded">Ready to get productive? 🚀</h3>
                   <p className="text-[#78716C] font-rounded">Add your first task above and let's make today amazing!</p>
