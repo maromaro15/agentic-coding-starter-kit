@@ -52,25 +52,60 @@ export function QuadrantCard({
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
+    e.stopPropagation();
+    e.dataTransfer.dropEffect = "move";
     setDraggedOver(true);
   };
 
-  const handleDragLeave = () => {
-    setDraggedOver(false);
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDraggedOver(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // Only set draggedOver to false if we're leaving the quadrant container
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    const x = e.clientX;
+    const y = e.clientY;
+    
+    if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) {
+      setDraggedOver(false);
+    }
   };
 
   const handleDrop = async (e: React.DragEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     setDraggedOver(false);
     
     const todoId = e.dataTransfer.getData("text/plain");
-    if (todoId) {
-      await onQuadrantChange(todoId, quadrant);
+    if (todoId && todoId.trim()) {
+      try {
+        await onQuadrantChange(todoId, quadrant);
+      } catch (error) {
+        console.error("Failed to move task:", error);
+      }
     }
   };
 
   const handleTodoDragStart = (e: React.DragEvent, todoId: string) => {
+    e.stopPropagation();
     e.dataTransfer.setData("text/plain", todoId);
+    e.dataTransfer.effectAllowed = "move";
+    
+    // Add visual feedback to the dragged element
+    const target = e.target as HTMLElement;
+    target.style.opacity = "0.5";
+  };
+
+  const handleTodoDragEnd = (e: React.DragEvent) => {
+    e.stopPropagation();
+    // Reset visual feedback
+    const target = e.target as HTMLElement;
+    target.style.opacity = "1";
   };
 
   const handleToggleComplete = async (todo: Todo) => {
@@ -115,36 +150,37 @@ export function QuadrantCard({
 
   return (
     <div
-      className={`${config.color} border-2 rounded-lg p-4 h-full flex flex-col transition-all duration-200 ${
-        draggedOver ? "border-blue-400 bg-blue-50" : ""
+      className={`${config.color} border-2 rounded-lg p-3 sm:p-4 h-full flex flex-col transition-all duration-200 ${
+        draggedOver ? "border-blue-400 bg-blue-50 shadow-lg scale-[1.02]" : ""
       }`}
       onDragOver={handleDragOver}
+      onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
       {/* Quadrant Header */}
-      <div className={`${config.headerColor} rounded-lg p-3 mb-4`}>
+      <div className={`${config.headerColor} rounded-lg p-2 sm:p-3 mb-3 sm:mb-4`}>
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-lg">{config.icon}</span>
-          <h3 className="font-bold text-lg">{config.title}</h3>
+          <span className="text-base sm:text-lg">{config.icon}</span>
+          <h3 className="font-bold text-base sm:text-lg">{config.title}</h3>
         </div>
-        <p className="text-sm font-medium opacity-90">{config.subtitle}</p>
-        <p className="text-xs opacity-75 mt-1">{config.description}</p>
+        <p className="text-xs sm:text-sm font-medium opacity-90">{config.subtitle}</p>
+        <p className="text-xs opacity-75 mt-1 hidden sm:block">{config.description}</p>
       </div>
 
       {/* Task Count */}
-      <div className="mb-3">
-        <span className="text-sm text-gray-600">
+      <div className="mb-2 sm:mb-3">
+        <span className="text-xs sm:text-sm text-gray-600">
           {todos.length} task{todos.length !== 1 ? "s" : ""}
         </span>
       </div>
 
       {/* Tasks List */}
-      <div className="flex-1 space-y-2 overflow-y-auto">
+      <div className="flex-1 space-y-1 sm:space-y-2 overflow-y-auto max-h-[300px] sm:max-h-[350px]">
         {todos.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">
-            <p className="text-sm">No tasks in this quadrant</p>
-            <p className="text-xs mt-1">Drag tasks here to organize them</p>
+          <div className="text-center py-6 sm:py-8 text-gray-500">
+            <p className="text-xs sm:text-sm">No tasks in this quadrant</p>
+            <p className="text-xs mt-1 hidden sm:block">Drag tasks here to organize them</p>
           </div>
         ) : (
           todos.map((todo) => (
@@ -152,7 +188,8 @@ export function QuadrantCard({
               key={todo.id}
               draggable
               onDragStart={(e) => handleTodoDragStart(e, todo.id)}
-              className={`bg-white rounded-lg p-3 border shadow-sm cursor-move hover:shadow-md transition-all duration-200 ${
+              onDragEnd={handleTodoDragEnd}
+              className={`bg-white rounded-lg p-3 sm:p-3 border shadow-sm cursor-move hover:shadow-md transition-all duration-200 select-none touch-manipulation min-h-[60px] sm:min-h-auto ${
                 todo.completed ? "opacity-60" : ""
               }`}
             >
@@ -161,13 +198,13 @@ export function QuadrantCard({
                 <div className="flex items-center gap-2 flex-1">
                   <button
                     onClick={() => handleToggleComplete(todo)}
-                    className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
+                    className={`w-6 h-6 sm:w-5 sm:h-5 rounded border-2 flex items-center justify-center transition-colors touch-manipulation ${
                       todo.completed
                         ? "bg-green-500 border-green-500 text-white"
                         : "border-gray-300 hover:border-green-400"
                     }`}
                   >
-                    {todo.completed && <Check size={12} />}
+                    {todo.completed && <Check size={14} className="sm:w-3 sm:h-3" />}
                   </button>
                   
                   {editingTodo === todo.id ? (
@@ -176,7 +213,7 @@ export function QuadrantCard({
                         type="text"
                         value={editTitle}
                         onChange={(e) => setEditTitle(e.target.value)}
-                        className="flex-1 px-2 py-1 text-sm border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="flex-1 px-2 py-1 text-xs sm:text-sm border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                         onKeyDown={(e) => {
                           if (e.key === "Enter") handleSaveEdit(todo.id);
                           if (e.key === "Escape") handleCancelEdit();
@@ -185,22 +222,23 @@ export function QuadrantCard({
                       />
                       <button
                         onClick={() => handleSaveEdit(todo.id)}
-                        className="p-1 text-green-600 hover:bg-accent hover:text-accent-foreground rounded transition-colors"
+                        className="p-2 sm:p-1 text-green-600 hover:bg-accent hover:text-accent-foreground rounded transition-colors touch-manipulation"
                       >
-                        <Check size={14} />
+                        <Check size={16} className="sm:w-3.5 sm:h-3.5" />
                       </button>
                       <button
                         onClick={handleCancelEdit}
-                        className="p-1 text-red-600 hover:bg-accent hover:text-accent-foreground rounded transition-colors"
+                        className="p-2 sm:p-1 text-red-600 hover:bg-accent hover:text-accent-foreground rounded transition-colors touch-manipulation"
                       >
-                        <X size={14} />
+                        <X size={16} className="sm:w-3.5 sm:h-3.5" />
                       </button>
                     </div>
                   ) : (
                     <h4
-                      className={`flex-1 font-medium text-sm ${
+                      className={`flex-1 font-medium text-sm sm:text-base truncate ${
                         todo.completed ? "line-through text-gray-500" : "text-gray-900"
                       }`}
+                      title={todo.title}
                     >
                       {todo.title}
                     </h4>
@@ -211,15 +249,15 @@ export function QuadrantCard({
                   <div className="flex gap-1">
                     <button
                       onClick={() => handleStartEdit(todo)}
-                      className="p-1 text-gray-400 hover:bg-accent hover:text-accent-foreground rounded transition-colors"
+                      className="p-2 sm:p-1 text-gray-400 hover:bg-accent hover:text-accent-foreground rounded transition-colors touch-manipulation"
                     >
-                      <Edit2 size={12} />
+                      <Edit2 size={14} className="sm:w-3 sm:h-3" />
                     </button>
                     <button
                       onClick={() => onDeleteTodo(todo.id)}
-                      className="p-1 text-gray-400 hover:bg-accent hover:text-accent-foreground rounded transition-colors"
+                      className="p-2 sm:p-1 text-gray-400 hover:bg-accent hover:text-accent-foreground rounded transition-colors touch-manipulation"
                     >
-                      <Trash2 size={12} />
+                      <Trash2 size={14} className="sm:w-3 sm:h-3" />
                     </button>
                   </div>
                 )}

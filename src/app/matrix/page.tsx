@@ -37,7 +37,7 @@ export default function MatrixPage() {
       const response = await fetch("/api/todos");
       if (response.ok) {
         const data = await response.json();
-        setTodos(data);
+        setTodos(data.todos || []);
       } else {
         toast.error("Failed to load tasks");
       }
@@ -75,11 +75,12 @@ export default function MatrixPage() {
       });
 
       if (response.ok) {
-        const newTodo = await response.json();
+        const data = await response.json();
+        const newTodo = data.todo;
         setTodos(prev => [...prev, newTodo]);
         setShowAddTodo(false);
         toast.success("Task added successfully!");
-        return newTodo;
+        return data;
       } else {
         toast.error("Failed to add task");
       }
@@ -99,7 +100,8 @@ export default function MatrixPage() {
       });
 
       if (response.ok) {
-        const updatedTodo = await response.json();
+        const data = await response.json();
+        const updatedTodo = data.todo || data;
         setTodos(prev => prev.map(todo => 
           todo.id === id ? { ...todo, ...updatedTodo } : todo
         ));
@@ -205,27 +207,27 @@ export default function MatrixPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-2 sm:p-4">
       {/* Header */}
-      <div className="max-w-7xl mx-auto mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-4">
+      <div className="max-w-7xl mx-auto mb-4 sm:mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => router.back()}
-              className="hover:bg-accent hover:text-accent-foreground transition-colors"
+              className="hover:bg-accent hover:text-accent-foreground transition-colors p-2 sm:px-3"
             >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back
+              <ArrowLeft className="h-4 w-4 sm:mr-2" />
+              <span className="hidden sm:inline">Back</span>
             </Button>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Eisenhower Matrix</h1>
-              <p className="text-gray-600">Organize tasks by urgency and importance</p>
+              <h1 className="text-xl sm:text-3xl font-bold text-gray-900">Eisenhower Matrix</h1>
+              <p className="text-sm sm:text-base text-gray-600">Organize tasks by urgency and importance</p>
             </div>
           </div>
           
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
             {/* Filter Buttons */}
             <div className="flex bg-white rounded-lg p-1 shadow-sm">
               {["all", "active", "completed"].map((filterType) => (
@@ -234,7 +236,7 @@ export default function MatrixPage() {
                   variant={filter === filterType ? "default" : "ghost"}
                   size="sm"
                   onClick={() => setFilter(filterType as typeof filter)}
-                  className="capitalize"
+                  className="capitalize flex-1 sm:flex-none text-xs sm:text-sm"
                 >
                   {filterType}
                 </Button>
@@ -242,60 +244,64 @@ export default function MatrixPage() {
             </div>
             
             {/* Action Buttons */}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleAutoCategorize}
-              className="bg-background hover:bg-accent hover:text-accent-foreground transition-colors"
-            >
-              <RotateCcw className="h-4 w-4 mr-2" />
-              Auto-Categorize
-            </Button>
-            
-            <Button
-              onClick={() => setShowAddTodo(true)}
-              className="bg-primary hover:bg-primary-hover hover:text-primary-hover-foreground transition-colors"
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Add Task
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleAutoCategorize}
+                className="bg-background hover:bg-accent hover:text-accent-foreground transition-colors flex-1 sm:flex-none text-xs sm:text-sm"
+              >
+                <RotateCcw className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" />
+                <span className="hidden sm:inline">Auto-Categorize</span>
+                <span className="sm:hidden">Auto</span>
+              </Button>
+              
+              <Button
+                onClick={() => setShowAddTodo(true)}
+                className="bg-primary hover:bg-primary-hover hover:text-primary-hover-foreground transition-colors flex-1 sm:flex-none text-xs sm:text-sm"
+              >
+                <Plus className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" />
+                <span className="hidden sm:inline">Add Task</span>
+                <span className="sm:hidden">Add</span>
+              </Button>
+            </div>
           </div>
         </div>
 
         {/* Statistics */}
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-6">
-          <div className="bg-white rounded-lg p-4 text-center shadow-sm">
-            <div className="text-2xl font-bold text-gray-900">{stats.total}</div>
-            <div className="text-sm text-gray-600">Total Tasks</div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4 mb-4 sm:mb-6">
+          <div className="bg-white rounded-lg p-2 sm:p-4 text-center shadow-sm">
+            <div className="text-lg sm:text-2xl font-bold text-gray-900">{stats.total}</div>
+            <div className="text-xs sm:text-sm text-gray-600">Total Tasks</div>
           </div>
-          <div className="bg-white rounded-lg p-4 text-center shadow-sm">
-            <div className="text-2xl font-bold text-green-600">{stats.completed}</div>
-            <div className="text-sm text-gray-600">Completed</div>
+          <div className="bg-white rounded-lg p-2 sm:p-4 text-center shadow-sm">
+            <div className="text-lg sm:text-2xl font-bold text-green-600">{stats.completed}</div>
+            <div className="text-xs sm:text-sm text-gray-600">Completed</div>
           </div>
-          <div className="bg-red-50 rounded-lg p-4 text-center shadow-sm">
-            <div className="text-2xl font-bold text-red-600">{stats.do_first}</div>
-            <div className="text-sm text-red-700">Do First</div>
+          <div className="bg-red-50 rounded-lg p-2 sm:p-4 text-center shadow-sm">
+            <div className="text-lg sm:text-2xl font-bold text-red-600">{stats.do_first}</div>
+            <div className="text-xs sm:text-sm text-red-700">Do First</div>
           </div>
-          <div className="bg-green-50 rounded-lg p-4 text-center shadow-sm">
-            <div className="text-2xl font-bold text-green-600">{stats.schedule}</div>
-            <div className="text-sm text-green-700">Schedule</div>
+          <div className="bg-green-50 rounded-lg p-2 sm:p-4 text-center shadow-sm">
+            <div className="text-lg sm:text-2xl font-bold text-green-600">{stats.schedule}</div>
+            <div className="text-xs sm:text-sm text-green-700">Schedule</div>
           </div>
-          <div className="bg-yellow-50 rounded-lg p-4 text-center shadow-sm">
-            <div className="text-2xl font-bold text-yellow-600">{stats.delegate}</div>
-            <div className="text-sm text-yellow-700">Delegate</div>
+          <div className="bg-yellow-50 rounded-lg p-2 sm:p-4 text-center shadow-sm">
+            <div className="text-lg sm:text-2xl font-bold text-yellow-600">{stats.delegate}</div>
+            <div className="text-xs sm:text-sm text-yellow-700">Delegate</div>
           </div>
-          <div className="bg-gray-50 rounded-lg p-4 text-center shadow-sm">
-            <div className="text-2xl font-bold text-gray-600">{stats.do_later}</div>
-            <div className="text-sm text-gray-700">Do Later</div>
+          <div className="bg-gray-50 rounded-lg p-2 sm:p-4 text-center shadow-sm">
+            <div className="text-lg sm:text-2xl font-bold text-gray-600">{stats.do_later}</div>
+            <div className="text-xs sm:text-sm text-gray-700">Do Later</div>
           </div>
         </div>
       </div>
 
       {/* Add Todo Modal */}
       {showAddTodo && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <h2 className="text-xl font-bold mb-4">Add New Task</h2>
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2 sm:p-4">
+          <div className="bg-white rounded-lg p-3 sm:p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Add New Task</h2>
             <AddTodo
               onAdd={handleAddTodo}
               onCancel={() => setShowAddTodo(false)}
@@ -306,7 +312,7 @@ export default function MatrixPage() {
 
       {/* Matrix Grid */}
       <div className="max-w-7xl mx-auto">
-        <div className="bg-white rounded-xl shadow-lg p-6">
+        <div className="bg-white rounded-lg sm:rounded-xl shadow-lg p-2 sm:p-6">
           <MatrixGrid
             todos={filteredTodos}
             onUpdateTodo={handleUpdateTodo}

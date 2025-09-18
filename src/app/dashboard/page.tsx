@@ -153,11 +153,11 @@ export default function DashboardPage() {
 
   if (isPending || loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center space-y-6 bg-card rounded-lg p-12 border shadow-lg">
-          <Loader2 className="h-12 w-12 animate-spin mx-auto text-primary" />
-          <p className="text-lg text-foreground font-medium">Loading dashboard...</p>
-          <p className="text-sm text-muted-foreground">Please wait while we prepare your workspace.</p>
+      <div className="min-h-screen bg-background flex items-center justify-center px-4">
+        <div className="text-center space-y-4 sm:space-y-6 bg-card rounded-lg p-6 sm:p-8 lg:p-12 border shadow-lg max-w-md mx-auto">
+          <Loader2 className="h-10 w-10 sm:h-12 sm:w-12 animate-spin mx-auto text-primary" />
+          <p className="text-base sm:text-lg text-foreground font-medium">Loading dashboard...</p>
+          <p className="text-xs sm:text-sm text-muted-foreground">Please wait while we prepare your workspace.</p>
         </div>
       </div>
     );
@@ -165,15 +165,15 @@ export default function DashboardPage() {
 
   if (!session) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center px-6">
+      <div className="min-h-screen bg-background flex items-center justify-center px-4 sm:px-6">
         <div className="max-w-lg mx-auto text-center">
-          <div className="bg-card rounded-xl p-12 border border-border shadow-sm">
-            <div className="mb-8">
-              <div className="w-24 h-24 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center shadow-sm">
-                <Lock className="w-12 h-12 text-primary" />
+          <div className="bg-card rounded-xl p-6 sm:p-8 lg:p-12 border border-border shadow-sm">
+            <div className="mb-6 sm:mb-8">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-4 sm:mb-6 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center shadow-sm">
+                <Lock className="w-10 h-10 sm:w-12 sm:h-12 text-primary" />
               </div>
-              <h1 className="text-3xl font-bold mb-4 text-foreground">Welcome to TaskFlow! 🎉</h1>
-              <p className="text-muted-foreground text-lg leading-relaxed">
+              <h1 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4 text-foreground">Welcome to TaskFlow! 🎉</h1>
+              <p className="text-muted-foreground text-base sm:text-lg leading-relaxed">
                 Ready to supercharge your productivity? Sign in to access your personal dashboard and start managing your tasks with AI-powered insights! ✨
               </p>
             </div>
@@ -186,38 +186,40 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-6 py-8">
+      <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8 bg-gradient-to-r from-card via-secondary/30 to-card rounded-xl p-8 border border-border shadow-sm">
-          <div>
-            <h1 className="text-4xl font-bold text-foreground mb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 sm:mb-8 bg-gradient-to-r from-card via-secondary/30 to-card rounded-xl p-4 sm:p-6 lg:p-8 border border-border shadow-sm space-y-4 sm:space-y-0">
+          <div className="flex-1">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-2 sm:mb-3">
               Welcome back, {session.user?.name || 'User'}! 👋
             </h1>
-            <p className="text-muted-foreground text-lg">
+            <p className="text-muted-foreground text-sm sm:text-base lg:text-lg">
               Ready to tackle your tasks today? Let's make productivity fun! ✨
             </p>
           </div>
-          <UserProfile />
+          <div className="flex-shrink-0">
+            <UserProfile />
+          </div>
         </div>
         {/* Action Buttons */}
-        <div className="mb-8 flex flex-wrap gap-4">
+        <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
           <Button
             onClick={() => setShowAddTodo(!showAddTodo)}
-            className="bg-primary hover:bg-primary-hover hover:text-primary-hover-foreground text-primary-foreground font-semibold text-lg px-8 py-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-250 hover:scale-102"
+            className="bg-primary hover:bg-primary-hover hover:text-primary-hover-foreground text-primary-foreground font-semibold text-sm sm:text-base lg:text-lg px-4 sm:px-6 lg:px-8 py-3 sm:py-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-250 hover:scale-102 w-full sm:w-auto"
             size="lg"
           >
-            <Plus className="w-6 h-6 mr-3" />
+            <Plus className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" />
             {showAddTodo ? 'Cancel' : 'Add New Task'}
           </Button>
           
           <Button
             asChild
             variant="outline"
-            className="font-semibold text-lg px-8 py-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-250 hover:scale-102"
+            className="font-semibold text-sm sm:text-base lg:text-lg px-4 sm:px-6 lg:px-8 py-3 sm:py-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-250 hover:scale-102 w-full sm:w-auto"
             size="lg"
           >
-            <Link href="/matrix" className="flex items-center">
-              <Grid3X3 className="w-6 h-6 mr-3" />
+            <Link href="/matrix" className="flex items-center justify-center">
+              <Grid3X3 className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" />
               Matrix View
             </Link>
           </Button>
@@ -225,8 +227,8 @@ export default function DashboardPage() {
 
         {/* Add Todo Section */}
         {showAddTodo && (
-          <div className="mb-8 animate-in slide-in-from-top-2 duration-250">
-            <div className="bg-card rounded-xl p-8 border border-border shadow-sm">
+          <div className="mb-6 sm:mb-8 animate-in slide-in-from-top-2 duration-250">
+            <div className="bg-card rounded-xl p-4 sm:p-6 lg:p-8 border border-border shadow-sm">
               <AddTodo onAdd={addTodo} />
             </div>
           </div>
@@ -234,7 +236,7 @@ export default function DashboardPage() {
 
         {/* Todo List Section */}
         <div>
-          <div className="bg-card rounded-xl p-8 border border-border shadow-sm">
+          <div className="bg-card rounded-xl p-4 sm:p-6 lg:p-8 border border-border shadow-sm">
             <TodoList
                todos={todos}
                onUpdate={updateTodo}

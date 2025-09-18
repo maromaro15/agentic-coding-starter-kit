@@ -132,13 +132,23 @@ export default function ChatPage() {
   const [input, setInput] = useState("");
 
   if (isPending) {
-    return <div className="container mx-auto px-4 py-12">Loading...</div>;
+    return (
+      <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <div className="text-center text-base sm:text-lg">Loading...</div>
+      </div>
+    );
   }
 
   if (!session) {
     return (
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-3xl mx-auto">
+      <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <div className="max-w-3xl mx-auto text-center">
+          <div className="mb-6 sm:mb-8">
+            <h1 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">AI Chat</h1>
+            <p className="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-8">
+              Sign in to start chatting with AI
+            </p>
+          </div>
           <UserProfile />
         </div>
       </div>
@@ -146,34 +156,34 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-8">
       <div className="max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-6 pb-4 border-b">
-          <h1 className="text-2xl font-bold">AI Chat</h1>
-          <span className="text-sm text-muted-foreground">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6 pb-3 sm:pb-4 border-b gap-2 sm:gap-0">
+          <h1 className="text-xl sm:text-2xl font-bold">AI Chat</h1>
+          <span className="text-xs sm:text-sm text-muted-foreground">
             Welcome, {session.user.name}!
           </span>
         </div>
 
-        <div className="min-h-[50vh] overflow-y-auto space-y-4 mb-4">
+        <div className="min-h-[40vh] sm:min-h-[50vh] overflow-y-auto space-y-3 sm:space-y-4 mb-3 sm:mb-4 px-1">
           {messages.length === 0 && (
-            <div className="text-center text-muted-foreground">
+            <div className="text-center text-muted-foreground text-sm sm:text-base py-8 sm:py-12">
               Start a conversation with AI
             </div>
           )}
           {messages.map((message) => (
             <div
               key={message.id}
-              className={`p-3 rounded-lg ${
+              className={`p-2 sm:p-3 rounded-lg ${
                 message.role === "user"
-                  ? "bg-primary text-primary-foreground ml-auto max-w-[80%]"
-                  : "bg-muted max-w-[80%]"
+                  ? "bg-primary text-primary-foreground ml-auto max-w-[85%] sm:max-w-[80%]"
+                  : "bg-muted max-w-[85%] sm:max-w-[80%]"
               }`}
             >
-              <div className="text-sm font-medium mb-1">
+              <div className="text-xs sm:text-sm font-medium mb-1">
                 {message.role === "user" ? "You" : "AI"}
               </div>
-              <div>{renderMessageContent(message as MaybePartsMessage)}</div>
+              <div className="text-sm sm:text-base">{renderMessageContent(message as MaybePartsMessage)}</div>
             </div>
           ))}
         </div>
@@ -186,19 +196,20 @@ export default function ChatPage() {
             sendMessage({ role: "user", parts: [{ type: "text", text }] });
             setInput("");
           }}
-          className="flex gap-2"
+          className="flex flex-col sm:flex-row gap-2 sm:gap-3"
         >
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Type your message..."
-            className="flex-1 p-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+            className="flex-1 p-3 sm:p-2 text-sm sm:text-base border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring min-h-[44px] sm:min-h-[40px]"
           />
           <Button
             type="submit"
             disabled={!input.trim() || status === "streaming"}
+            className="w-full sm:w-auto px-6 py-3 sm:px-4 sm:py-2 text-sm sm:text-base min-h-[44px] sm:min-h-[40px]"
           >
-            Send
+            {status === "streaming" ? "Sending..." : "Send"}
           </Button>
         </form>
       </div>

@@ -115,27 +115,50 @@ export function MatrixGrid({ todos, onUpdateTodo, onDeleteTodo }: MatrixGridProp
   };
 
   return (
-    <div className="w-full h-full p-4">
+    <div className="w-full h-full p-2 sm:p-4">
       {/* Matrix Header */}
-      <div className="mb-6 text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Eisenhower Matrix</h1>
-        <p className="text-gray-600">Organize tasks by urgency and importance</p>
+      <div className="mb-4 sm:mb-6 text-center">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Eisenhower Matrix</h1>
+        <p className="text-sm sm:text-base text-gray-600">Organize tasks by urgency and importance</p>
       </div>
 
       {/* Axis Labels */}
       <div className="relative">
-        {/* Importance Axis (Vertical) */}
-        <div className="absolute -left-16 top-1/2 -translate-y-1/2 -rotate-90 text-sm font-medium text-gray-600">
+        {/* Importance Axis (Vertical) - Hidden on mobile */}
+        <div className="hidden sm:block absolute -left-16 top-1/2 -translate-y-1/2 -rotate-90 text-sm font-medium text-gray-600">
           IMPORTANCE
         </div>
         
-        {/* Urgency Axis (Horizontal) */}
-        <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-sm font-medium text-gray-600">
+        {/* Urgency Axis (Horizontal) - Hidden on mobile */}
+        <div className="hidden sm:block absolute -bottom-8 left-1/2 -translate-x-1/2 text-sm font-medium text-gray-600">
           URGENCY
         </div>
 
-        {/* 2x2 Grid */}
-        <div className="grid grid-cols-2 gap-4 h-[600px]">
+        {/* Mobile Axis Labels */}
+        <div className="sm:hidden mb-4">
+          <div className="flex justify-between items-center text-xs text-gray-500 mb-2">
+            <span>Low Urgency</span>
+            <span className="font-medium">URGENCY</span>
+            <span>High Urgency</span>
+          </div>
+          <div className="text-center mb-2">
+            <span className="text-xs font-medium text-gray-500">IMPORTANCE</span>
+          </div>
+          <div className="flex justify-between text-xs text-gray-500">
+            <span>High ↑</span>
+            <span>Low ↓</span>
+          </div>
+        </div>
+
+        {/* 2x2 Grid - Responsive */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 min-h-[400px] sm:min-h-[450px] max-h-[80vh]">
+          {/* Mobile: Show quadrant order indicators */}
+          <div className="sm:hidden mb-2 grid grid-cols-2 gap-3 text-xs text-gray-400">
+            <div className="text-center">1. Do First</div>
+            <div className="text-center">2. Schedule</div>
+            <div className="text-center">3. Delegate</div>
+            <div className="text-center">4. Eliminate</div>
+          </div>
           {/* Top Row: High Importance */}
           <QuadrantCard
             quadrant="do_first"

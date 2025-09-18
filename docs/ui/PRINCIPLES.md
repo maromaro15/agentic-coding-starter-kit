@@ -40,10 +40,14 @@ Every design decision prioritizes the human experience. We design for real peopl
 - **Focus indicators** - Clear, visible focus states for all interactive elements
 
 ### 5. Mobile-First Responsive
-- **Touch-friendly targets** - Minimum 44px touch targets for mobile interactions
-- **Readable text** - 16px minimum font size on mobile devices
-- **Thumb-friendly navigation** - Important actions within easy thumb reach
-- **Adaptive layouts** - Content reflows gracefully across all screen sizes
+- **Touch-friendly targets** - Minimum 44px (11 Tailwind units) touch targets for mobile interactions
+- **Progressive sizing** - Elements scale appropriately from mobile to desktop (e.g., `h-8 w-8 sm:h-10 sm:w-10`)
+- **Readable text** - 16px minimum font size on mobile, scaling up on larger screens
+- **Thumb-friendly navigation** - Important actions within easy thumb reach (bottom 75% of screen)
+- **Adaptive layouts** - Content reflows gracefully using responsive utilities (`flex-col sm:flex-row`)
+- **Touch manipulation** - Add `touch-manipulation` class to interactive elements for better touch response
+- **Responsive spacing** - Use responsive spacing patterns (`gap-1.5 sm:gap-2`, `p-3 sm:p-6`)
+- **Content prioritization** - Hide less critical content on mobile (`hidden xs:inline`, `xs:hidden sm:block`)
 
 ## Visual Language
 

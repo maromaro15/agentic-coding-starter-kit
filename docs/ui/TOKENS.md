@@ -47,6 +47,49 @@ This file defines all the core design tokens used throughout TaskFlow's warm and
 --popover-foreground: hsl(20 25% 15%); /* Popover text */
 ```
 
+### Mobile Touch Targets
+```css
+/* Minimum touch target sizes for mobile accessibility */
+--touch-target-min: 44px;           /* Minimum 44px for touch targets */
+--touch-target-comfortable: 48px;    /* Comfortable touch target size */
+--touch-target-large: 56px;          /* Large touch targets for primary actions */
+```
+
+### Responsive Spacing Scale
+```css
+/* Mobile-first spacing that scales up */
+--space-mobile-xs: 0.25rem;         /* 1 - 4px */
+--space-mobile-sm: 0.5rem;          /* 2 - 8px */
+--space-mobile-md: 0.75rem;         /* 3 - 12px */
+--space-mobile-lg: 1rem;            /* 4 - 16px */
+--space-mobile-xl: 1.5rem;          /* 6 - 24px */
+
+--space-desktop-xs: 0.375rem;       /* 1.5 - 6px */
+--space-desktop-sm: 0.75rem;        /* 3 - 12px */
+--space-desktop-md: 1rem;           /* 4 - 16px */
+--space-desktop-lg: 1.5rem;         /* 6 - 24px */
+--space-desktop-xl: 2rem;           /* 8 - 32px */
+```
+
+### Typography Scale (Mobile-First)
+```css
+/* Base mobile sizes */
+--text-xs-mobile: 0.75rem;          /* 12px */
+--text-sm-mobile: 0.875rem;         /* 14px */
+--text-base-mobile: 1rem;           /* 16px - minimum for mobile */
+--text-lg-mobile: 1.125rem;         /* 18px */
+--text-xl-mobile: 1.25rem;          /* 20px */
+
+/* Desktop scaling */
+--text-xs-desktop: 0.75rem;         /* 12px */
+--text-sm-desktop: 0.875rem;        /* 14px */
+--text-base-desktop: 1rem;          /* 16px */
+--text-lg-desktop: 1.125rem;        /* 18px */
+--text-xl-desktop: 1.5rem;          /* 24px */
+--text-2xl-desktop: 1.875rem;       /* 30px */
+--text-3xl-desktop: 2.25rem;        /* 36px */
+```
+
 ### Button Hover States
 ```css
 /* Primary button hover states with proper contrast */

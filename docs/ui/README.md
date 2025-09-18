@@ -34,12 +34,15 @@ All the design tokens (colors, typography, spacing, etc.) that power our visual 
 - Border radius, shadows, and animations
 
 ### [👨‍🍳 COOKBOOK.md](./COOKBOOK.md)
-Practical recipes and code examples for implementing common UI patterns.
+Practical recipes and code examples for implementing common UI patterns with mobile-first responsive design.
 
 **Key topics:**
-- Button patterns (primary, secondary, icon)
+- Button patterns (primary, secondary, icon) with mobile touch targets
+- Mobile-first responsive patterns and layouts
+- Touch target guidelines and accessibility
+- Typography scaling and spacing patterns
+- Form components optimized for mobile and desktop
 - Card layouts (task cards, project cards)
-- Form components (inputs, selects, textareas)
 - Loading states and feedback patterns
 
 ## 🚀 Quick Start
@@ -49,6 +52,30 @@ Practical recipes and code examples for implementing common UI patterns.
 npm install tailwindcss @tailwindcss/forms
 npm install @radix-ui/react-* # For shadcn/ui components
 ```
+
+### 2. Mobile-First Implementation
+Always start with mobile design and scale up:
+
+```tsx
+// ✅ CORRECT: Mobile-first approach
+<button className="h-8 w-8 p-2 text-sm sm:h-10 sm:w-10 sm:p-1 sm:text-base touch-manipulation">
+  <Icon className="w-3 h-3 sm:w-4 sm:h-4" />
+</button>
+
+// ✅ CORRECT: Responsive layout
+<div className="flex flex-col gap-3 p-3 sm:flex-row sm:gap-4 sm:p-6">
+  <div className="w-full sm:w-48">
+    <Input className="h-10 text-sm sm:h-12 sm:text-base" />
+  </div>
+</div>
+```
+
+### 3. Key Principles to Follow
+- **Touch targets**: Minimum 44px height for interactive elements
+- **Progressive enhancement**: Start mobile, enhance for desktop
+- **Content prioritization**: Hide less critical content on mobile
+- **Readable text**: 16px minimum on mobile, scale up for desktop
+- **Touch optimization**: Add `touch-manipulation` to interactive elements
 
 ### 2. Configure Tailwind
 Add our design tokens to your `tailwind.config.js`:

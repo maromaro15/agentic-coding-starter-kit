@@ -154,53 +154,53 @@ export function TodoList({ todos, onUpdate, onDelete }: TodoListProps) {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 sm:space-y-8">
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-        <div className="text-center p-6 bg-card rounded-lg border hover:shadow-lg transition-all duration-300">
-          <div className="text-3xl font-bold text-foreground mb-1">{stats.total}</div>
-          <div className="text-sm font-medium text-muted-foreground">Total Tasks</div>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6">
+        <div className="text-center p-3 sm:p-6 bg-card rounded-lg border hover:shadow-lg transition-all duration-300">
+          <div className="text-xl sm:text-3xl font-bold text-foreground mb-1">{stats.total}</div>
+          <div className="text-xs sm:text-sm font-medium text-muted-foreground">Total Tasks</div>
         </div>
-        <div className="text-center p-6 bg-card rounded-lg border hover:shadow-lg transition-all duration-300">
-          <div className="text-3xl font-bold text-blue-600 mb-1">{stats.active}</div>
-          <div className="text-sm font-medium text-muted-foreground">In Progress</div>
+        <div className="text-center p-3 sm:p-6 bg-card rounded-lg border hover:shadow-lg transition-all duration-300">
+          <div className="text-xl sm:text-3xl font-bold text-blue-600 mb-1">{stats.active}</div>
+          <div className="text-xs sm:text-sm font-medium text-muted-foreground">In Progress</div>
         </div>
-        <div className="text-center p-6 bg-card rounded-lg border hover:shadow-lg transition-all duration-300">
-          <div className="text-3xl font-bold text-green-600 mb-1">{stats.completed}</div>
-          <div className="text-sm font-medium text-muted-foreground">Completed</div>
+        <div className="text-center p-3 sm:p-6 bg-card rounded-lg border hover:shadow-lg transition-all duration-300">
+          <div className="text-xl sm:text-3xl font-bold text-green-600 mb-1">{stats.completed}</div>
+          <div className="text-xs sm:text-sm font-medium text-muted-foreground">Completed</div>
         </div>
-        <div className="text-center p-6 bg-card rounded-lg border hover:shadow-lg transition-all duration-300">
-          <div className="text-3xl font-bold text-destructive mb-1">{stats.overdue}</div>
-          <div className="text-sm font-medium text-muted-foreground">Overdue</div>
+        <div className="text-center p-3 sm:p-6 bg-card rounded-lg border hover:shadow-lg transition-all duration-300">
+          <div className="text-xl sm:text-3xl font-bold text-destructive mb-1">{stats.overdue}</div>
+          <div className="text-xs sm:text-sm font-medium text-muted-foreground">Overdue</div>
         </div>
       </div>
 
       {/* Filters and Search */}
-      <div className="space-y-6">
+      <div className="space-y-3 sm:space-y-6">
         <div className="relative">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
           <Input
             placeholder="Search your tasks..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-12 h-10 rounded-md border focus:border-ring focus:ring-2 focus:ring-ring/20 transition-all duration-300"
+            className="pl-10 sm:pl-12 h-9 sm:h-10 rounded-md border focus:border-ring focus:ring-2 focus:ring-ring/20 transition-all duration-300 text-sm sm:text-base"
           />
         </div>
 
-        <div className="flex flex-wrap gap-3">
-          <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2 sm:gap-3">
+          <div className="flex flex-wrap gap-1.5 sm:gap-2">
             {(["all", "active", "completed", "overdue"] as FilterType[]).map((filterType) => (
               <Button
                 key={filterType}
                 variant={filter === filterType ? "default" : "outline"}
                 size="sm"
                 onClick={() => setFilter(filterType)}
-                className="flex items-center gap-2 rounded-md px-4 py-2 h-10 transition-all duration-200"
+                className="flex items-center gap-1 sm:gap-2 rounded-md px-2 sm:px-4 py-1.5 sm:py-2 h-8 sm:h-10 transition-all duration-200 text-xs sm:text-sm touch-manipulation"
               >
-                {getFilterIcon(filterType)}
-                {filterType.charAt(0).toUpperCase() + filterType.slice(1)}
+                <span className="text-xs sm:text-sm">{getFilterIcon(filterType)}</span>
+                <span className="hidden xs:inline sm:inline">{filterType.charAt(0).toUpperCase() + filterType.slice(1)}</span>
                 {filterType === "overdue" && stats.overdue > 0 && (
-                  <Badge variant="destructive" className="ml-2 px-2 py-0.5 text-xs rounded-full">
+                  <Badge variant="destructive" className="ml-1 sm:ml-2 px-1 sm:px-2 py-0.5 text-xs rounded-full">
                     {stats.overdue}
                   </Badge>
                 )}
@@ -210,9 +210,9 @@ export function TodoList({ todos, onUpdate, onDelete }: TodoListProps) {
         </div>
 
         {/* Matrix Quadrant Filters */}
-        <div className="flex flex-wrap gap-3">
-          <div className="text-sm font-medium text-muted-foreground mb-2">Matrix Quadrants:</div>
-          <div className="flex gap-2">
+        <div className="space-y-2">
+          <div className="text-xs sm:text-sm font-medium text-muted-foreground">Matrix Quadrants:</div>
+          <div className="flex flex-wrap gap-1.5 sm:gap-2">
             {(["do_first", "schedule", "delegate", "do_later"] as FilterType[]).map((quadrant) => {
               const count = stats[quadrant as keyof typeof stats] as number;
               return (
@@ -221,12 +221,12 @@ export function TodoList({ todos, onUpdate, onDelete }: TodoListProps) {
                   variant={filter === quadrant ? "default" : "outline"}
                   size="sm"
                   onClick={() => setFilter(quadrant)}
-                  className="flex items-center gap-2 rounded-md px-3 py-2 h-9 transition-all duration-200"
+                  className="flex items-center gap-1 sm:gap-2 rounded-md px-2 sm:px-3 py-1.5 sm:py-2 h-8 sm:h-9 transition-all duration-200 text-xs sm:text-sm touch-manipulation"
                 >
-                  <span className="text-sm">{getFilterIcon(quadrant)}</span>
-                  <span className="capitalize">{quadrant.replace('_', ' ')}</span>
+                  <span className="text-xs sm:text-sm">{getFilterIcon(quadrant)}</span>
+                  <span className="capitalize hidden xs:inline sm:inline">{quadrant.replace('_', ' ')}</span>
                   {count > 0 && (
-                    <Badge variant="secondary" className="ml-1 px-1.5 py-0.5 text-xs rounded-full">
+                    <Badge variant="secondary" className="ml-0.5 sm:ml-1 px-1 sm:px-1.5 py-0.5 text-xs rounded-full">
                       {count}
                     </Badge>
                   )}
@@ -236,25 +236,25 @@ export function TodoList({ todos, onUpdate, onDelete }: TodoListProps) {
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-3">
           <Select value={sortBy} onValueChange={(value: SortType) => setSortBy(value)}>
-            <SelectTrigger className="w-48 h-10 rounded-md border hover:bg-accent hover:text-accent-foreground transition-all duration-300">
+            <SelectTrigger className="w-full sm:w-48 h-9 sm:h-10 rounded-md border hover:bg-accent hover:text-accent-foreground transition-all duration-300 text-sm sm:text-base">
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
             <SelectContent className="rounded-md border shadow-lg">
-              <SelectItem value="created" className="hover:bg-accent">Created Date</SelectItem>
-              <SelectItem value="priority" className="hover:bg-accent">Priority</SelectItem>
-              <SelectItem value="dueDate" className="hover:bg-accent">Due Date</SelectItem>
-              <SelectItem value="title" className="hover:bg-accent">Title</SelectItem>
-              <SelectItem value="urgency" className="hover:bg-accent">Urgency</SelectItem>
-              <SelectItem value="importance" className="hover:bg-accent">Importance</SelectItem>
-              <SelectItem value="quadrant" className="hover:bg-accent">Matrix Quadrant</SelectItem>
+              <SelectItem value="created" className="hover:bg-accent text-sm">Created Date</SelectItem>
+              <SelectItem value="priority" className="hover:bg-accent text-sm">Priority</SelectItem>
+              <SelectItem value="dueDate" className="hover:bg-accent text-sm">Due Date</SelectItem>
+              <SelectItem value="title" className="hover:bg-accent text-sm">Title</SelectItem>
+              <SelectItem value="urgency" className="hover:bg-accent text-sm">Urgency</SelectItem>
+              <SelectItem value="importance" className="hover:bg-accent text-sm">Importance</SelectItem>
+              <SelectItem value="quadrant" className="hover:bg-accent text-sm">Matrix Quadrant</SelectItem>
             </SelectContent>
           </Select>
 
           {categories.length > 0 && (
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-              <SelectTrigger className="w-48 h-10 rounded-2xl border hover:bg-accent hover:text-accent-foreground transition-all duration-300 font-rounded">
+              <SelectTrigger className="w-full sm:w-48 h-9 sm:h-10 rounded-2xl border hover:bg-accent hover:text-accent-foreground transition-all duration-300 font-rounded text-sm sm:text-base">
                 <SelectValue placeholder="Category 🏷️" />
               </SelectTrigger>
               <SelectContent className="rounded-2xl border-[#E7E5E4] bg-white shadow-xl">

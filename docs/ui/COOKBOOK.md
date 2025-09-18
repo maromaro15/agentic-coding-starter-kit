@@ -5,13 +5,19 @@ This cookbook provides practical examples and patterns for implementing TaskFlow
 ## Button Patterns
 
 ### Primary Button
-Use for the main action on a page or in a section.
+Use for the main action on a page or in a section. Always implement mobile-first with proper touch targets.
 
 ```tsx
-<button className="bg-primary hover:bg-primary-dark text-primary-foreground font-medium px-6 py-3 rounded-lg transition-all duration-250 hover:scale-102 focus:ring-2 focus:ring-ring focus:ring-offset-2">
+<button className="bg-primary hover:bg-primary-dark text-primary-foreground font-medium px-4 py-2 sm:px-6 sm:py-3 rounded-lg transition-all duration-250 hover:scale-102 focus:ring-2 focus:ring-ring focus:ring-offset-2 touch-manipulation min-h-[44px] text-sm sm:text-base">
   Add New Task
 </button>
 ```
+
+**Mobile considerations:**
+- Minimum 44px height for touch accessibility
+- Responsive padding: `px-4 py-2 sm:px-6 sm:py-3`
+- Text scales from `text-sm` to `text-base`
+- `touch-manipulation` for better touch response
 
 **When to use:** Creating tasks, saving changes, confirming actions
 
@@ -80,15 +86,114 @@ Buttons should have accessible hover effects that maintain proper contrast in bo
 - Test hover states in both light and dark themes
 
 ### Icon Button
-Use for compact actions with clear iconography.
+Use for compact actions with clear iconography. Ensure adequate touch targets on mobile.
 
 ```tsx
-<button className="p-2 rounded-md hover:bg-muted transition-colors duration-250 focus:ring-2 focus:ring-ring focus:ring-offset-2">
-  <PlusIcon className="w-5 h-5 text-foreground" />
+<button className="p-2 sm:p-1 rounded-md hover:bg-muted transition-colors duration-250 focus:ring-2 focus:ring-ring focus:ring-offset-2 touch-manipulation h-8 w-8 sm:h-10 sm:w-10">
+  <PlusIcon className="w-3 h-3 sm:w-5 sm:h-5 text-foreground" />
 </button>
 ```
 
+**Mobile considerations:**
+- Larger padding on mobile: `p-2 sm:p-1`
+- Responsive sizing: `h-8 w-8 sm:h-10 sm:w-10`
+- Smaller icons on mobile: `w-3 h-3 sm:w-5 sm:h-5`
+- `touch-manipulation` for better touch response
+
 **When to use:** Quick actions, toolbar buttons, compact interfaces
+
+## Mobile-First Responsive Patterns
+
+### Touch Target Guidelines
+All interactive elements must meet minimum touch target requirements:
+
+```tsx
+// ✅ CORRECT: Proper mobile touch targets
+<button className="h-8 w-8 sm:h-10 sm:w-10 p-2 sm:p-1 touch-manipulation">
+  <Icon className="w-3 h-3 sm:w-4 sm:h-4" />
+</button>
+
+// ✅ CORRECT: Checkbox with proper sizing
+<Checkbox className="h-5 w-5 sm:h-6 sm:w-6 touch-manipulation" />
+
+// ❌ WRONG: Too small for mobile
+<button className="h-6 w-6 p-1">
+  <Icon className="w-4 h-4" />
+</button>
+```
+
+### Responsive Spacing Patterns
+Use consistent spacing patterns that scale from mobile to desktop:
+
+```tsx
+// Container spacing
+<div className="p-3 sm:p-6 space-y-3 sm:space-y-4">
+  
+// Grid gaps
+<div className="grid gap-3 sm:gap-6">
+  
+// Flex gaps
+<div className="flex gap-1.5 sm:gap-2">
+  
+// Element margins
+<div className="mb-1 sm:mb-2">
+```
+
+### Typography Scaling
+Text should be readable on mobile and scale appropriately:
+
+```tsx
+// Headings
+<h1 className="text-xl sm:text-3xl font-bold">
+<h2 className="text-lg sm:text-2xl font-semibold">
+<h3 className="text-base sm:text-lg font-medium">
+
+// Body text
+<p className="text-sm sm:text-base">
+<span className="text-xs sm:text-sm">
+
+// Labels and captions
+<label className="text-xs sm:text-sm font-medium">
+```
+
+### Layout Patterns
+Common responsive layout patterns:
+
+```tsx
+// Stack on mobile, row on desktop
+<div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+
+// Full width on mobile, constrained on desktop
+<div className="w-full sm:w-48">
+
+// Hide on mobile, show on desktop
+<span className="hidden sm:inline">Desktop only text</span>
+
+// Show on mobile, hide on desktop
+<span className="sm:hidden">Mobile only text</span>
+
+// Abbreviated on mobile, full on desktop
+<span className="hidden xs:inline">Full Label</span>
+<span className="xs:hidden">Short</span>
+```
+
+### Form Elements
+Mobile-optimized form patterns:
+
+```tsx
+// Input fields
+<Input className="h-10 sm:h-12 text-sm sm:text-base px-3 sm:px-4" />
+
+// Select dropdowns
+<Select>
+  <SelectTrigger className="w-full sm:w-48 h-9 sm:h-10 text-sm sm:text-base">
+    <SelectValue />
+  </SelectTrigger>
+</Select>
+
+// Textarea
+<Textarea className="min-h-[80px] sm:min-h-[100px] text-sm sm:text-base p-3 sm:p-4" />
+```
 
 ## Card Patterns
 

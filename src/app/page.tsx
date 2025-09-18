@@ -124,59 +124,59 @@ export default function Home() {
     return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="container mx-auto px-6 py-20 text-center">
-        <div className="max-w-5xl mx-auto space-y-8">
-          <div className="flex items-center justify-center gap-4 mb-8">
-            <div className="p-4 rounded-2xl bg-primary/10 shadow-sm">
-              <Zap className="h-10 w-10 text-primary" />
+      <section className="container mx-auto px-4 sm:px-6 py-12 sm:py-20 text-center">
+        <div className="max-w-5xl mx-auto space-y-6 sm:space-y-8">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-6 sm:mb-8">
+            <div className="p-3 sm:p-4 rounded-2xl bg-primary/10 shadow-sm">
+              <Zap className="h-8 w-8 sm:h-10 sm:w-10 text-primary" />
             </div>
-            <h1 className="text-6xl font-bold text-primary">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-primary">
               TaskFlow
             </h1>
           </div>
           
-          <div className="space-y-6">
-            <h2 className="text-3xl font-semibold text-foreground">
+          <div className="space-y-4 sm:space-y-6">
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-foreground px-2">
               The AI-Powered Task Management Revolution
             </h2>
             
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed px-2">
               Transform your productivity with intelligent task categorization, smart prioritization, 
               and seamless workflow management. Let AI handle the organization while you focus on what matters.
             </p>
           </div>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center pt-4 px-4">
             {session ? (
-              <Button asChild size="lg" className="text-lg px-8 py-4 shadow-sm">
-                <Link href="/dashboard" className="flex items-center gap-2">
+              <Button asChild size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 shadow-sm w-full sm:w-auto">
+                <Link href="/dashboard" className="flex items-center justify-center gap-2">
                   Go to Dashboard
-                  <ArrowRight className="h-5 w-5" />
+                  <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
                 </Link>
               </Button>
             ) : (
-              <Button size="lg" className="text-lg px-8 py-4 shadow-sm">
+              <Button size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 shadow-sm w-full sm:w-auto">
                 Get Started Free
-                <Sparkles className="h-5 w-5 ml-2" />
+                <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 ml-2" />
               </Button>
             )}
             
-            <Button variant="outline" size="lg" className="text-lg px-8 py-4 shadow-sm">
+            <Button variant="outline" size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 shadow-sm w-full sm:w-auto">
               Watch Demo
             </Button>
           </div>
           
-          <div className="flex flex-wrap items-center justify-center gap-8 pt-8 text-sm text-muted-foreground">
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 pt-6 sm:pt-8 text-xs sm:text-sm text-muted-foreground px-4">
             <div className="flex items-center gap-2">
-              <Star className="h-4 w-4 fill-primary text-primary" />
+              <Star className="h-3 w-3 sm:h-4 sm:w-4 fill-primary text-primary" />
               <span>4.9/5 Rating</span>
             </div>
             <div className="flex items-center gap-2">
-              <CheckCircle className="h-4 w-4 text-green-500" />
+              <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-500" />
               <span>10,000+ Users</span>
             </div>
             <div className="flex items-center gap-2">
-              <Zap className="h-4 w-4 text-primary" />
+              <Zap className="h-3 w-3 sm:h-4 sm:w-4 text-primary" />
               <span>AI-Powered</span>
             </div>
           </div>
@@ -184,20 +184,20 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="bg-muted/30 py-20">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16 space-y-4">
-            <h2 className="text-4xl font-bold text-foreground">Why Choose TaskFlow?</h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+      <section className="bg-muted/30 py-12 sm:py-20">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12 sm:mb-16 space-y-3 sm:space-y-4">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground px-2">Why Choose TaskFlow?</h2>
+            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed px-2">
               Experience the future of task management with features designed to supercharge your productivity
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-7xl mx-auto">
             <Card className="border-0 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-              <CardHeader className="space-y-4">
-                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center">
-                  <Brain className="h-7 w-7 text-primary" />
+              <CardHeader className="space-y-3 sm:space-y-4 p-4 sm:p-6">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <Brain className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
                 </div>
                 <CardTitle className="text-xl">AI-Powered Categorization</CardTitle>
                 <CardDescription className="text-base leading-relaxed">
@@ -206,61 +206,61 @@ export default function Home() {
               </CardHeader>
             </Card>
             
-            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
-              <CardHeader>
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <Filter className="h-6 w-6 text-primary" />
+            <Card className="border-0 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+              <CardHeader className="space-y-3 sm:space-y-4 p-4 sm:p-6">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <Filter className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
                 </div>
-                <CardTitle>Smart Filtering & Search</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-lg sm:text-xl">Smart Filtering & Search</CardTitle>
+                <CardDescription className="text-sm sm:text-base leading-relaxed">
                   Find any task instantly with powerful search and filtering options. Sort by priority, category, due date, or completion status.
                 </CardDescription>
               </CardHeader>
             </Card>
             
-            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
-              <CardHeader>
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <Calendar className="h-6 w-6 text-primary" />
+            <Card className="border-0 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+              <CardHeader className="space-y-3 sm:space-y-4 p-4 sm:p-6">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <Calendar className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
                 </div>
-                <CardTitle>Due Date Management</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-lg sm:text-xl">Due Date Management</CardTitle>
+                <CardDescription className="text-sm sm:text-base leading-relaxed">
                   Never miss a deadline with intelligent due date tracking, overdue highlighting, and upcoming task notifications.
                 </CardDescription>
               </CardHeader>
             </Card>
             
-            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
-              <CardHeader>
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <CheckCircle className="h-6 w-6 text-primary" />
+            <Card className="border-0 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+              <CardHeader className="space-y-3 sm:space-y-4 p-4 sm:p-6">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <CheckCircle className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
                 </div>
-                <CardTitle>Priority Management</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-lg sm:text-xl">Priority Management</CardTitle>
+                <CardDescription className="text-sm sm:text-base leading-relaxed">
                   Color-coded priority levels (High, Medium, Low) help you focus on what matters most and maintain optimal workflow.
                 </CardDescription>
               </CardHeader>
             </Card>
             
-            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
-              <CardHeader>
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <BarChart3 className="h-6 w-6 text-primary" />
+            <Card className="border-0 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+              <CardHeader className="space-y-3 sm:space-y-4 p-4 sm:p-6">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <BarChart3 className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
                 </div>
-                <CardTitle>Progress Analytics</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-lg sm:text-xl">Progress Analytics</CardTitle>
+                <CardDescription className="text-sm sm:text-base leading-relaxed">
                   Track your productivity with detailed statistics, completion rates, and category distribution insights.
                 </CardDescription>
               </CardHeader>
             </Card>
             
-            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
-              <CardHeader>
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <Sparkles className="h-6 w-6 text-primary" />
+            <Card className="border-0 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+              <CardHeader className="space-y-3 sm:space-y-4 p-4 sm:p-6">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <Sparkles className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
                 </div>
-                <CardTitle>Beautiful Interface</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-lg sm:text-xl">Beautiful Interface</CardTitle>
+                <CardDescription className="text-sm sm:text-base leading-relaxed">
                   Enjoy a clean, modern interface with dark/light mode support, smooth animations, and responsive design.
                 </CardDescription>
               </CardHeader>
@@ -270,46 +270,46 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-6 text-center">
-          <div className="max-w-4xl mx-auto space-y-8">
-            <div className="space-y-4">
-              <h2 className="text-4xl font-bold text-foreground">
+      <section className="py-12 sm:py-16 lg:py-20">
+        <div className="container mx-auto px-4 sm:px-6 text-center">
+          <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8">
+            <div className="space-y-3 sm:space-y-4">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground px-2">
                 Ready to Transform Your Productivity?
               </h2>
-              <p className="text-xl text-muted-foreground leading-relaxed">
+              <p className="text-base sm:text-lg lg:text-xl text-muted-foreground leading-relaxed px-2">
                 Join thousands of users who have already revolutionized their task management with TaskFlow's AI-powered features.
               </p>
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center pt-4 px-4">
               {session ? (
-                <Button asChild size="lg" className="text-lg px-8 py-4 shadow-sm">
-                  <Link href="/dashboard" className="flex items-center gap-2">
+                <Button asChild size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 shadow-sm w-full sm:w-auto">
+                  <Link href="/dashboard" className="flex items-center justify-center gap-2">
                     Open Dashboard
-                    <ArrowRight className="h-5 w-5" />
+                    <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
                   </Link>
                 </Button>
               ) : (
-                <Button size="lg" className="text-lg px-8 py-4 shadow-sm">
+                <Button size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 shadow-sm w-full sm:w-auto">
                   Start Free Today
-                  <Sparkles className="h-5 w-5 ml-2" />
+                  <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 ml-2" />
                 </Button>
               )}
             </div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-12">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 pt-8 sm:pt-12 px-4">
               <div className="text-center space-y-2">
-                <div className="text-3xl font-bold text-primary">10,000+</div>
-                <div className="text-muted-foreground">Active Users</div>
+                <div className="text-2xl sm:text-3xl font-bold text-primary">10,000+</div>
+                <div className="text-sm sm:text-base text-muted-foreground">Active Users</div>
               </div>
               <div className="text-center space-y-2">
-                <div className="text-3xl font-bold text-primary">99.9%</div>
-                <div className="text-muted-foreground">Uptime</div>
+                <div className="text-2xl sm:text-3xl font-bold text-primary">99.9%</div>
+                <div className="text-sm sm:text-base text-muted-foreground">Uptime</div>
               </div>
               <div className="text-center space-y-2">
-                <div className="text-3xl font-bold text-primary">24/7</div>
-                <div className="text-muted-foreground">Support</div>
+                <div className="text-2xl sm:text-3xl font-bold text-primary">24/7</div>
+                <div className="text-sm sm:text-base text-muted-foreground">Support</div>
               </div>
             </div>
           </div>
