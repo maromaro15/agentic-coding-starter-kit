@@ -153,14 +153,14 @@ export default function DashboardPage() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center px-6">
         <div className="max-w-lg mx-auto text-center">
-          <div className="bg-card rounded-lg p-12 border shadow-lg">
+          <div className="bg-card rounded-xl p-12 border border-border shadow-sm">
             <div className="mb-8">
-              <div className="w-20 h-20 mx-auto mb-6 rounded-lg bg-primary flex items-center justify-center shadow-lg">
-                <Lock className="w-10 h-10 text-primary-foreground" />
+              <div className="w-24 h-24 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center shadow-sm">
+                <Lock className="w-12 h-12 text-primary" />
               </div>
-              <h1 className="text-3xl font-bold mb-4 text-foreground">Welcome to TaskFlow</h1>
-              <p className="text-muted-foreground text-lg leading-relaxed font-medium">
-                Please sign in to access your personal dashboard and start managing your tasks.
+              <h1 className="text-3xl font-bold mb-4 text-foreground">Welcome to TaskFlow! 🎉</h1>
+              <p className="text-muted-foreground text-lg leading-relaxed">
+                Ready to supercharge your productivity? Sign in to access your personal dashboard and start managing your tasks with AI-powered insights! ✨
               </p>
             </div>
             <UserProfile />
@@ -174,13 +174,13 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-6 py-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8 bg-card rounded-lg p-8 border shadow-lg">
+        <div className="flex items-center justify-between mb-8 bg-gradient-to-r from-card via-secondary/30 to-card rounded-xl p-8 border border-border shadow-sm">
           <div>
             <h1 className="text-4xl font-bold text-foreground mb-3">
-              Welcome back, {session.user?.name || 'User'}!
+              Welcome back, {session.user?.name || 'User'}! 👋
             </h1>
-            <p className="text-muted-foreground text-lg font-medium">
-              Manage your tasks efficiently and stay organized.
+            <p className="text-muted-foreground text-lg">
+              Ready to tackle your tasks today? Let's make productivity fun! ✨
             </p>
           </div>
           <UserProfile />
@@ -189,7 +189,7 @@ export default function DashboardPage() {
         <div className="mb-8">
           <Button
             onClick={() => setShowAddTodo(!showAddTodo)}
-            className="font-bold text-lg px-8 py-4 rounded-md shadow-lg hover:shadow-xl transition-all duration-300"
+            className="bg-primary hover:bg-primary-dark text-primary-foreground font-semibold text-lg px-8 py-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-250 hover:scale-102"
             size="lg"
           >
             <Plus className="w-6 h-6 mr-3" />
@@ -199,8 +199,8 @@ export default function DashboardPage() {
 
         {/* Add Todo Section */}
         {showAddTodo && (
-          <div className="mb-8">
-            <div className="bg-card rounded-lg p-8 border shadow-lg">
+          <div className="mb-8 animate-in slide-in-from-top-2 duration-250">
+            <div className="bg-card rounded-xl p-8 border border-border shadow-sm">
               <AddTodo onAdd={addTodo} />
             </div>
           </div>
@@ -208,7 +208,7 @@ export default function DashboardPage() {
 
         {/* Todo List Section */}
         <div>
-          <div className="bg-card rounded-lg p-8 border shadow-lg">
+          <div className="bg-card rounded-xl p-8 border border-border shadow-sm">
             <TodoList
                todos={todos}
                onUpdate={updateTodo}

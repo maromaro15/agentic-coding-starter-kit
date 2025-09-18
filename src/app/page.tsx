@@ -48,61 +48,62 @@ export default function Home() {
           {/* Hero Section */}
           <div className="space-y-6">
             <div className="flex items-center justify-center gap-4 mb-8">
-              <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 shadow-sm">
-                <CheckSquare className="h-8 w-8 text-primary" />
+              <div className="flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-br from-primary/20 via-primary/15 to-primary/10 shadow-lg">
+                <CheckSquare className="h-10 w-10 text-primary" />
               </div>
-              <h1 className="text-5xl font-bold tracking-tight bg-gradient-to-r from-primary via-primary/90 to-primary/70 bg-clip-text text-transparent">
+              <h1 className="text-5xl font-bold tracking-tight bg-gradient-to-r from-primary via-primary/90 to-accent bg-clip-text text-transparent">
                 TaskFlow
               </h1>
             </div>
             <h2 className="text-3xl font-semibold text-foreground mb-4">
-              Smart Task Management with AI
+              Smart Task Management with AI ✨
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Organize your tasks with intelligent categorization and priority suggestions powered by AI
+              Organize your tasks with intelligent categorization and priority suggestions powered by AI. 
+              Make productivity feel effortless and enjoyable.
             </p>
           </div>
 
           {/* Features Grid */}
           <div className="grid md:grid-cols-3 gap-6 text-left">
-            <Card className="border-0 shadow-sm hover:shadow-md transition-shadow duration-200">
-              <CardHeader className="space-y-3">
+            <Card className="border border-border shadow-sm hover:shadow-lg transition-all duration-250 hover:scale-102 bg-card">
+              <CardHeader className="space-y-4 p-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <Sparkles className="h-5 w-5 text-primary" />
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center shadow-sm">
+                    <Sparkles className="h-6 w-6 text-primary" />
                   </div>
-                  <CardTitle className="text-lg">AI Categorization</CardTitle>
+                  <CardTitle className="text-lg font-semibold text-card-foreground">AI Categorization</CardTitle>
                 </div>
-                <CardDescription className="text-sm leading-relaxed">
-                  Automatically categorize and prioritize your tasks using advanced AI
+                <CardDescription className="text-sm leading-relaxed text-muted-foreground">
+                  Automatically categorize and prioritize your tasks using advanced AI that learns from your patterns
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <Card className="border-0 shadow-sm hover:shadow-md transition-shadow duration-200">
-              <CardHeader className="space-y-3">
+            <Card className="border border-border shadow-sm hover:shadow-lg transition-all duration-250 hover:scale-102 bg-card">
+              <CardHeader className="space-y-4 p-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <CheckSquare className="h-5 w-5 text-primary" />
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-accent/20 to-accent/10 flex items-center justify-center shadow-sm">
+                    <CheckSquare className="h-6 w-6 text-accent" />
                   </div>
-                  <CardTitle className="text-lg">Smart Organization</CardTitle>
+                  <CardTitle className="text-lg font-semibold text-card-foreground">Smart Organization</CardTitle>
                 </div>
-                <CardDescription className="text-sm leading-relaxed">
-                  Filter, sort, and manage your todos with powerful organization tools
+                <CardDescription className="text-sm leading-relaxed text-muted-foreground">
+                  Filter, sort, and manage your todos with powerful organization tools that make productivity effortless
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <Card className="border-0 shadow-sm hover:shadow-md transition-shadow duration-200">
-              <CardHeader className="space-y-3">
+            <Card className="border border-border shadow-sm hover:shadow-lg transition-all duration-250 hover:scale-102 bg-card">
+              <CardHeader className="space-y-4 p-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <LogIn className="h-5 w-5 text-primary" />
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-success/20 to-success/10 flex items-center justify-center shadow-sm">
+                    <LogIn className="h-6 w-6 text-success" />
                   </div>
-                  <CardTitle className="text-lg">Secure & Personal</CardTitle>
+                  <CardTitle className="text-lg font-semibold text-card-foreground">Secure & Personal</CardTitle>
                 </div>
-                <CardDescription className="text-sm leading-relaxed">
-                  Your tasks are private and secure with user authentication
+                <CardDescription className="text-sm leading-relaxed text-muted-foreground">
+                  Your tasks are private and secure with user authentication, keeping your productivity data safe
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -111,7 +112,7 @@ export default function Home() {
           {/* CTA Section */}
           <div className="space-y-6 pt-8">
             <p className="text-muted-foreground text-lg">
-              Sign in to start managing your tasks with AI-powered insights
+              Ready to transform your productivity? 🚀 Sign in to start managing your tasks with AI-powered insights
             </p>
             <SignInButton />
           </div>
