@@ -134,7 +134,7 @@ export function TodoItem({ todo, onUpdate, onDelete }: TodoItemProps) {
                     variant="outline"
                     size="default"
                     className={cn(
-                      "justify-start text-left font-normal h-10 rounded-2xl px-4 border-2 border-[#E7E5E4] hover:border-[#F4A261] hover:bg-[#FFF8F0] transition-all duration-200",
+                      "justify-start text-left font-normal h-10 rounded-2xl px-4 border-2 border hover:bg-accent hover:text-accent-foreground transition-all duration-200",
                       !editDueDate && "text-muted-foreground"
                     )}
                   >
@@ -153,11 +153,11 @@ export function TodoItem({ todo, onUpdate, onDelete }: TodoItemProps) {
               </Popover>
             </div>
             <div className="flex gap-3">
-              <Button size="default" onClick={handleSave} className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-4 py-2 rounded-md transition-all duration-200">
+              <Button size="default" onClick={handleSave} className="bg-primary hover:bg-primary-hover hover:text-primary-hover-foreground text-primary-foreground font-medium px-4 py-2 rounded-md transition-all duration-200">
                 <Save className="mr-2 h-4 w-4" />
                 Save Changes
               </Button>
-              <Button size="default" variant="outline" onClick={handleCancel} className="border hover:bg-accent hover:text-accent-foreground font-medium px-4 py-2 rounded-md transition-all duration-200">
+              <Button size="default" variant="outline" onClick={handleCancel} className="border hover:bg-outline-hover hover:text-outline-hover-foreground font-medium px-4 py-2 rounded-md transition-all duration-200">
                 <X className="mr-2 h-4 w-4" />
                 Cancel
               </Button>

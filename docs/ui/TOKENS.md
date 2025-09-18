@@ -47,6 +47,33 @@ This file defines all the core design tokens used throughout TaskFlow's warm and
 --popover-foreground: hsl(20 25% 15%); /* Popover text */
 ```
 
+### Button Hover States
+```css
+/* Primary button hover states with proper contrast */
+--primary-hover: hsl(16 85% 50%);         /* Darker coral for light mode hover */
+--primary-hover-foreground: hsl(0 0% 100%); /* White text maintains contrast */
+
+/* Secondary button hover states */
+--secondary-hover: hsl(25 95% 90%);       /* Slightly darker peach */
+--secondary-hover-foreground: hsl(20 25% 25%); /* Maintains dark text contrast */
+
+/* Accent button hover states */
+--accent-hover: hsl(25 30% 88%);          /* Muted background hover */
+--accent-hover-foreground: hsl(20 25% 15%); /* Dark text for contrast */
+
+/* Ghost button hover states */
+--ghost-hover: hsl(25 30% 94%);           /* Light muted hover */
+--ghost-hover-foreground: hsl(20 25% 15%); /* Dark text for contrast */
+
+/* Outline button hover states */
+--outline-hover: hsl(25 30% 94%);         /* Light background on hover */
+--outline-hover-foreground: hsl(20 25% 15%); /* Dark text maintains readability */
+
+/* Destructive button hover states */
+--destructive-hover: hsl(0 75% 55%);      /* Darker red for hover */
+--destructive-hover-foreground: hsl(0 0% 100%); /* White text for contrast */
+```
+
 ### Status Colors
 ```css
 --success: hsl(140 60% 55%);          /* Success state */
@@ -57,6 +84,35 @@ This file defines all the core design tokens used throughout TaskFlow's warm and
 --destructive-foreground: hsl(0 0% 100%); /* Text on destructive */
 --info: hsl(200 85% 65%);             /* Information state */
 --info-foreground: hsl(0 0% 100%);    /* Text on info */
+```
+
+## Dark Mode Tokens
+
+### Dark Mode Button Hover States
+```css
+/* Dark mode hover states with enhanced contrast */
+--primary-hover-dark: hsl(16 85% 70%);    /* Lighter coral for dark mode hover */
+--primary-hover-foreground-dark: hsl(20 15% 8%); /* Dark text for contrast */
+
+/* Secondary button hover states in dark mode */
+--secondary-hover-dark: hsl(20 15% 18%);  /* Lighter dark background */
+--secondary-hover-foreground-dark: hsl(30 20% 95%); /* Light text for contrast */
+
+/* Accent button hover states in dark mode */
+--accent-hover-dark: hsl(200 85% 75%);    /* Brighter accent for visibility */
+--accent-hover-foreground-dark: hsl(20 15% 8%); /* Dark text for contrast */
+
+/* Ghost button hover states in dark mode */
+--ghost-hover-dark: hsl(20 15% 18%);      /* Subtle dark hover */
+--ghost-hover-foreground-dark: hsl(30 20% 95%); /* Light text for readability */
+
+/* Outline button hover states in dark mode */
+--outline-hover-dark: hsl(20 15% 18%);    /* Dark background on hover */
+--outline-hover-foreground-dark: hsl(30 20% 95%); /* Light text for contrast */
+
+/* Destructive button hover states in dark mode */
+--destructive-hover-dark: hsl(0 75% 75%); /* Brighter red for dark mode */
+--destructive-hover-foreground-dark: hsl(20 15% 8%); /* Dark text for contrast */
 ```
 
 ## Typography

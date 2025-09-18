@@ -203,7 +203,7 @@ export default function DashboardPage() {
         <div className="mb-8 flex flex-wrap gap-4">
           <Button
             onClick={() => setShowAddTodo(!showAddTodo)}
-            className="bg-primary hover:bg-primary-dark text-primary-foreground font-semibold text-lg px-8 py-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-250 hover:scale-102"
+            className="bg-primary hover:bg-primary-hover hover:text-primary-hover-foreground text-primary-foreground font-semibold text-lg px-8 py-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-250 hover:scale-102"
             size="lg"
           >
             <Plus className="w-6 h-6 mr-3" />

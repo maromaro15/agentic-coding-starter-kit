@@ -19,6 +19,18 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-hover-foreground: var(--primary-hover-foreground);
+  --color-secondary-hover: var(--secondary-hover);
+  --color-secondary-hover-foreground: var(--secondary-hover-foreground);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-hover-foreground: var(--accent-hover-foreground);
+  --color-ghost-hover: var(--ghost-hover);
+  --color-ghost-hover-foreground: var(--ghost-hover-foreground);
+  --color-outline-hover: var(--outline-hover);
+  --color-outline-hover-foreground: var(--outline-hover-foreground);
+  --color-destructive-hover: var(--destructive-hover);
+  --color-destructive-hover-foreground: var(--destructive-hover-foreground);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -70,6 +82,21 @@
   --border: hsl(25 25% 88%);
   --input: hsl(25 25% 90%);
   --ring: hsl(16 85% 60%);
+  
+  /* Button hover states for light mode */
+  --primary-hover: hsl(16 85% 50%);
+  --primary-hover-foreground: hsl(0 0% 100%);
+  --secondary-hover: hsl(25 95% 90%);
+  --secondary-hover-foreground: hsl(20 25% 25%);
+  --accent-hover: hsl(25 30% 88%);
+  --accent-hover-foreground: hsl(20 25% 15%);
+  --ghost-hover: hsl(25 30% 94%);
+  --ghost-hover-foreground: hsl(20 25% 15%);
+  --outline-hover: hsl(25 30% 94%);
+  --outline-hover-foreground: hsl(20 25% 15%);
+  --destructive-hover: hsl(0 75% 55%);
+  --destructive-hover-foreground: hsl(0 0% 100%);
+  
   --chart-1: hsl(16 85% 60%);
   --chart-2: hsl(200 85% 65%);
   --chart-3: hsl(140 60% 55%);
@@ -116,6 +143,21 @@
   --border: hsl(20 15% 20%);
   --input: hsl(20 15% 18%);
   --ring: hsl(16 85% 65%);
+  
+  /* Button hover states for dark mode */
+  --primary-hover: hsl(16 85% 70%);
+  --primary-hover-foreground: hsl(20 15% 8%);
+  --secondary-hover: hsl(20 15% 18%);
+  --secondary-hover-foreground: hsl(30 20% 95%);
+  --accent-hover: hsl(200 85% 75%);
+  --accent-hover-foreground: hsl(20 15% 8%);
+  --ghost-hover: hsl(20 15% 18%);
+  --ghost-hover-foreground: hsl(30 20% 95%);
+  --outline-hover: hsl(20 15% 18%);
+  --outline-hover-foreground: hsl(30 20% 95%);
+  --destructive-hover: hsl(0 75% 75%);
+  --destructive-hover-foreground: hsl(20 15% 8%);
+  
   --chart-1: hsl(16 85% 65%);
   --chart-2: hsl(200 85% 70%);
   --chart-3: hsl(140 60% 60%);

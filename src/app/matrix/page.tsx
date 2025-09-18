@@ -214,7 +214,7 @@ export default function MatrixPage() {
               variant="ghost"
               size="sm"
               onClick={() => router.back()}
-              className="hover:bg-white/50"
+              className="hover:bg-accent hover:text-accent-foreground transition-colors"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back
@@ -246,7 +246,7 @@ export default function MatrixPage() {
               variant="outline"
               size="sm"
               onClick={handleAutoCategorize}
-              className="bg-white hover:bg-gray-50"
+              className="bg-background hover:bg-accent hover:text-accent-foreground transition-colors"
             >
               <RotateCcw className="h-4 w-4 mr-2" />
               Auto-Categorize
@@ -254,7 +254,7 @@ export default function MatrixPage() {
             
             <Button
               onClick={() => setShowAddTodo(true)}
-              className="bg-primary hover:bg-primary/90"
+              className="bg-primary hover:bg-primary-hover hover:text-primary-hover-foreground transition-colors"
             >
               <Plus className="h-4 w-4 mr-2" />
               Add Task

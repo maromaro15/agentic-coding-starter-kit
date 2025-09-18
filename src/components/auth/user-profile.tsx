@@ -77,14 +77,14 @@ export function UserProfile() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="bg-[#E7E5E4] mx-2" />
-        <DropdownMenuItem asChild className="mx-2 my-1 rounded-xl hover:bg-gradient-to-r hover:from-[#FFF8F0] hover:to-[#FED7AA] transition-all duration-200">
+        <DropdownMenuItem asChild className="mx-2 my-1 rounded-xl hover:bg-accent hover:text-accent-foreground transition-all duration-200">
           <Link href="/profile" className="flex items-center px-3 py-3 font-medium text-[#2D3748]">
             <User className="mr-3 h-4 w-4 text-[#F4A261]" />
             🏠 Your Profile
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator className="bg-[#E7E5E4] mx-2" />
-        <DropdownMenuItem onClick={handleSignOut} className="mx-2 my-1 rounded-xl hover:bg-gradient-to-r hover:from-[#FED7D7] hover:to-[#FEB2B2] transition-all duration-200 font-medium text-[#C53030]">
+        <DropdownMenuItem onClick={handleSignOut} className="mx-2 my-1 rounded-xl hover:bg-destructive hover:text-destructive-foreground transition-all duration-200 font-medium text-destructive">
           <LogOut className="mr-3 h-4 w-4" />
           👋 Log out
         </DropdownMenuItem>

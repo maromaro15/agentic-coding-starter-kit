@@ -26,6 +26,59 @@ Use for supporting actions or less critical operations.
 
 **When to use:** Cancel actions, secondary navigation, optional features
 
+### Button Hover Effects
+
+Buttons should have accessible hover effects that maintain proper contrast in both light and dark themes. Use our theme-aware hover tokens instead of opacity-based approaches:
+
+```tsx
+// ✅ CORRECT: Theme-aware hover states with proper contrast
+<Button className="bg-primary text-primary-foreground hover:bg-primary-hover hover:text-primary-hover-foreground transition-colors">
+  Primary Action
+</Button>
+
+<Button variant="secondary" className="bg-secondary text-secondary-foreground hover:bg-secondary-hover hover:text-secondary-hover-foreground transition-colors">
+  Secondary Action
+</Button>
+
+<Button variant="ghost" className="hover:bg-ghost-hover hover:text-ghost-hover-foreground transition-colors">
+  Ghost Button
+</Button>
+
+<Button variant="outline" className="border bg-background hover:bg-outline-hover hover:text-outline-hover-foreground transition-colors">
+  Outline Button
+</Button>
+
+<Button variant="destructive" className="bg-destructive text-destructive-foreground hover:bg-destructive-hover hover:text-destructive-hover-foreground transition-colors">
+  Delete Item
+</Button>
+```
+
+#### ❌ Avoid These Patterns
+
+```tsx
+// ❌ WRONG: Opacity-based hover (poor contrast)
+<Button className="bg-primary hover:bg-primary/90">
+  Bad Contrast
+</Button>
+
+// ❌ WRONG: Hardcoded colors (theme-breaking)
+<Button className="hover:bg-blue-500 hover:text-white">
+  Theme Breaking
+</Button>
+
+// ❌ WRONG: Missing foreground color change
+<Button className="bg-primary text-primary-foreground hover:bg-primary-hover">
+  Incomplete Hover
+</Button>
+```
+
+#### Contrast Requirements
+
+- All button hover states must maintain **WCAG AA contrast ratio (4.5:1)** for normal text
+- Always specify both background AND foreground colors in hover states
+- Use `transition-colors` for smooth color transitions
+- Test hover states in both light and dark themes
+
 ### Icon Button
 Use for compact actions with clear iconography.
 

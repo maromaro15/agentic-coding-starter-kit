@@ -254,13 +254,13 @@ export function TodoList({ todos, onUpdate, onDelete }: TodoListProps) {
 
           {categories.length > 0 && (
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-              <SelectTrigger className="w-48 h-10 rounded-2xl border-[#E7E5E4] bg-[#FAFAF9] hover:bg-white hover:border-[#E85D75] transition-all duration-300 font-rounded">
+              <SelectTrigger className="w-48 h-10 rounded-2xl border hover:bg-accent hover:text-accent-foreground transition-all duration-300 font-rounded">
                 <SelectValue placeholder="Category 🏷️" />
               </SelectTrigger>
               <SelectContent className="rounded-2xl border-[#E7E5E4] bg-white shadow-xl">
-                <SelectItem value="all" className="font-rounded hover:bg-[#FEF3F2]">🌟 All Categories</SelectItem>
+                <SelectItem value="all" className="font-rounded hover:bg-accent hover:text-accent-foreground">🌟 All Categories</SelectItem>
                 {categories.map((category) => (
-                  <SelectItem key={category} value={category} className="font-rounded hover:bg-[#FEF3F2]">
+                  <SelectItem key={category} value={category} className="font-rounded hover:bg-accent hover:text-accent-foreground">
                     📂 {category}
                   </SelectItem>
                 ))}
@@ -284,7 +284,7 @@ export function TodoList({ todos, onUpdate, onDelete }: TodoListProps) {
                 <Button
                   variant="outline"
                   size="default"
-                  className="mt-6 rounded-2xl px-6 py-3 h-12 border-[#E85D75] text-[#E85D75] hover:bg-[#E85D75] hover:text-white transition-all duration-300 font-rounded shadow-lg hover:shadow-xl hover:scale-105"
+                  className="mt-6 rounded-2xl px-6 py-3 h-12 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 font-rounded shadow-lg hover:shadow-xl hover:scale-105"
                   onClick={() => {
                     setSearchQuery("");
                     setFilter("all");

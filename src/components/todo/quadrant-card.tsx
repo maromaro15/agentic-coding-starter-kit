@@ -185,13 +185,13 @@ export function QuadrantCard({
                       />
                       <button
                         onClick={() => handleSaveEdit(todo.id)}
-                        className="p-1 text-green-600 hover:bg-green-100 rounded"
+                        className="p-1 text-green-600 hover:bg-accent hover:text-accent-foreground rounded transition-colors"
                       >
                         <Check size={14} />
                       </button>
                       <button
                         onClick={handleCancelEdit}
-                        className="p-1 text-red-600 hover:bg-red-100 rounded"
+                        className="p-1 text-red-600 hover:bg-accent hover:text-accent-foreground rounded transition-colors"
                       >
                         <X size={14} />
                       </button>
@@ -211,13 +211,13 @@ export function QuadrantCard({
                   <div className="flex gap-1">
                     <button
                       onClick={() => handleStartEdit(todo)}
-                      className="p-1 text-gray-400 hover:text-blue-600 hover:bg-blue-100 rounded"
+                      className="p-1 text-gray-400 hover:bg-accent hover:text-accent-foreground rounded transition-colors"
                     >
                       <Edit2 size={12} />
                     </button>
                     <button
                       onClick={() => onDeleteTodo(todo.id)}
-                      className="p-1 text-gray-400 hover:text-red-600 hover:bg-red-100 rounded"
+                      className="p-1 text-gray-400 hover:bg-accent hover:text-accent-foreground rounded transition-colors"
                     >
                       <Trash2 size={12} />
                     </button>
