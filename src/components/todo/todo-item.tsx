@@ -30,6 +30,9 @@ interface Todo {
   completed: boolean;
   priority: number;
   category?: string;
+  urgency?: number;
+  importance?: number;
+  matrix_quadrant?: "do_first" | "schedule" | "delegate" | "do_later";
   dueDate?: Date;
   createdAt: Date;
   updatedAt: Date;
@@ -82,6 +85,21 @@ export function TodoItem({ todo, onUpdate, onDelete }: TodoItemProps) {
       case 3: return "High";
       case 2: return "Medium";
       default: return "Low";
+    }
+  };
+
+  const getQuadrantInfo = (quadrant?: string) => {
+    switch (quadrant) {
+      case "do_first":
+        return { label: "Do First", color: "bg-red-100 text-red-800 border-red-200", emoji: "🔥" };
+      case "schedule":
+        return { label: "Schedule", color: "bg-green-100 text-green-800 border-green-200", emoji: "📅" };
+      case "delegate":
+        return { label: "Delegate", color: "bg-yellow-100 text-yellow-800 border-yellow-200", emoji: "👥" };
+      case "do_later":
+        return { label: "Do Later", color: "bg-gray-100 text-gray-800 border-gray-200", emoji: "⏳" };
+      default:
+        return { label: "Uncategorized", color: "bg-blue-100 text-blue-800 border-blue-200", emoji: "❓" };
     }
   };
 
@@ -199,6 +217,25 @@ export function TodoItem({ todo, onUpdate, onDelete }: TodoItemProps) {
               <Badge className={cn("text-xs px-3 py-1.5 rounded-full font-semibold shadow-sm", getPriorityColor(todo.priority))}>
                 {getPriorityLabel(todo.priority)}
               </Badge>
+              {todo.matrix_quadrant && (
+                <Badge className={cn("text-xs px-3 py-1.5 rounded-full font-semibold shadow-sm flex items-center gap-1", getQuadrantInfo(todo.matrix_quadrant).color)}>
+                  {getQuadrantInfo(todo.matrix_quadrant).emoji} {getQuadrantInfo(todo.matrix_quadrant).label}
+                </Badge>
+              )}
+              {(todo.urgency !== undefined || todo.importance !== undefined) && (
+                <div className="flex gap-1">
+                  {todo.urgency !== undefined && (
+                    <Badge variant="outline" className="text-xs px-2 py-1 rounded-md font-medium bg-orange-50 text-orange-700 border-orange-200">
+                      U: {todo.urgency}/5
+                    </Badge>
+                  )}
+                  {todo.importance !== undefined && (
+                    <Badge variant="outline" className="text-xs px-2 py-1 rounded-md font-medium bg-purple-50 text-purple-700 border-purple-200">
+                      I: {todo.importance}/5
+                    </Badge>
+                  )}
+                </div>
+              )}
               {todo.dueDate && (
                 <Badge 
                   variant="outline" 

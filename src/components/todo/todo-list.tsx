@@ -28,6 +28,9 @@ interface Todo {
   completed: boolean;
   priority: number;
   category?: string;
+  urgency?: number;
+  importance?: number;
+  matrix_quadrant?: "do_first" | "schedule" | "delegate" | "do_later";
   dueDate?: Date;
   createdAt: Date;
   updatedAt: Date;
@@ -39,8 +42,8 @@ interface TodoListProps {
   onDelete: (id: string) => void;
 }
 
-type FilterType = "all" | "active" | "completed" | "overdue";
-type SortType = "created" | "priority" | "dueDate" | "title";
+type FilterType = "all" | "active" | "completed" | "overdue" | "do_first" | "schedule" | "delegate" | "do_later";
+type SortType = "created" | "priority" | "dueDate" | "title" | "urgency" | "importance" | "quadrant";
 
 export function TodoList({ todos, onUpdate, onDelete }: TodoListProps) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -77,6 +80,12 @@ export function TodoList({ todos, onUpdate, onDelete }: TodoListProps) {
             return false;
           }
           break;
+        case "do_first":
+        case "schedule":
+        case "delegate":
+        case "do_later":
+          if (todo.matrix_quadrant !== filter) return false;
+          break;
       }
 
       // Category filter
@@ -99,6 +108,14 @@ export function TodoList({ todos, onUpdate, onDelete }: TodoListProps) {
           return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
         case "title":
           return a.title.localeCompare(b.title);
+        case "urgency":
+          return (b.urgency || 0) - (a.urgency || 0);
+        case "importance":
+          return (b.importance || 0) - (a.importance || 0);
+        case "quadrant":
+          const quadrantOrder = { "do_first": 4, "schedule": 3, "delegate": 2, "do_later": 1 };
+          return (quadrantOrder[b.matrix_quadrant as keyof typeof quadrantOrder] || 0) - 
+                 (quadrantOrder[a.matrix_quadrant as keyof typeof quadrantOrder] || 0);
         case "created":
         default:
           return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
@@ -115,8 +132,12 @@ export function TodoList({ todos, onUpdate, onDelete }: TodoListProps) {
     const overdue = todos.filter(t => 
       !t.completed && t.dueDate && new Date(t.dueDate) < new Date()
     ).length;
+    const do_first = todos.filter(t => t.matrix_quadrant === "do_first").length;
+    const schedule = todos.filter(t => t.matrix_quadrant === "schedule").length;
+    const delegate = todos.filter(t => t.matrix_quadrant === "delegate").length;
+    const do_later = todos.filter(t => t.matrix_quadrant === "do_later").length;
 
-    return { total, completed, active, overdue };
+    return { total, completed, active, overdue, do_first, schedule, delegate, do_later };
   }, [todos]);
 
   const getFilterIcon = (filterType: FilterType) => {
@@ -124,6 +145,10 @@ export function TodoList({ todos, onUpdate, onDelete }: TodoListProps) {
       case "completed": return <CheckCircle2 className="h-4 w-4" />;
       case "active": return <Circle className="h-4 w-4" />;
       case "overdue": return <AlertTriangle className="h-4 w-4" />;
+      case "do_first": return "🔥";
+      case "schedule": return "📅";
+      case "delegate": return "👥";
+      case "do_later": return "⏳";
       default: return <Filter className="h-4 w-4" />;
     }
   };
@@ -184,6 +209,33 @@ export function TodoList({ todos, onUpdate, onDelete }: TodoListProps) {
           </div>
         </div>
 
+        {/* Matrix Quadrant Filters */}
+        <div className="flex flex-wrap gap-3">
+          <div className="text-sm font-medium text-muted-foreground mb-2">Matrix Quadrants:</div>
+          <div className="flex gap-2">
+            {(["do_first", "schedule", "delegate", "do_later"] as FilterType[]).map((quadrant) => {
+              const count = stats[quadrant as keyof typeof stats] as number;
+              return (
+                <Button
+                  key={quadrant}
+                  variant={filter === quadrant ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setFilter(quadrant)}
+                  className="flex items-center gap-2 rounded-md px-3 py-2 h-9 transition-all duration-200"
+                >
+                  <span className="text-sm">{getFilterIcon(quadrant)}</span>
+                  <span className="capitalize">{quadrant.replace('_', ' ')}</span>
+                  {count > 0 && (
+                    <Badge variant="secondary" className="ml-1 px-1.5 py-0.5 text-xs rounded-full">
+                      {count}
+                    </Badge>
+                  )}
+                </Button>
+              );
+            })}
+          </div>
+        </div>
+
         <div className="flex flex-wrap gap-3">
           <Select value={sortBy} onValueChange={(value: SortType) => setSortBy(value)}>
             <SelectTrigger className="w-48 h-10 rounded-md border hover:bg-accent hover:text-accent-foreground transition-all duration-300">
@@ -194,6 +246,9 @@ export function TodoList({ todos, onUpdate, onDelete }: TodoListProps) {
               <SelectItem value="priority" className="hover:bg-accent">Priority</SelectItem>
               <SelectItem value="dueDate" className="hover:bg-accent">Due Date</SelectItem>
               <SelectItem value="title" className="hover:bg-accent">Title</SelectItem>
+              <SelectItem value="urgency" className="hover:bg-accent">Urgency</SelectItem>
+              <SelectItem value="importance" className="hover:bg-accent">Importance</SelectItem>
+              <SelectItem value="quadrant" className="hover:bg-accent">Matrix Quadrant</SelectItem>
             </SelectContent>
           </Select>
 

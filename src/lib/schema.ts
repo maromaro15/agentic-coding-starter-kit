@@ -57,6 +57,9 @@ export const todos = pgTable("todos", {
   completed: boolean("completed").notNull().default(false),
   priority: integer("priority").notNull().default(1), // 1=low, 2=medium, 3=high
   category: text("category"), // AI-generated category
+  urgency: integer("urgency").notNull().default(1), // 1=low, 2=medium, 3=high
+  importance: integer("importance").notNull().default(1), // 1=low, 2=medium, 3=high
+  matrix_quadrant: text("matrix_quadrant").notNull().default("do_later"), // do_first, schedule, delegate, do_later
   dueDate: timestamp("dueDate"),
   userId: text("userId")
     .notNull()

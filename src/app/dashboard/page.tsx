@@ -6,7 +6,8 @@ import { AddTodo } from "@/components/todo/add-todo";
 import { TodoList } from "@/components/todo/todo-list";
 import { UserProfile } from "@/components/auth/user-profile";
 import { Button } from "@/components/ui/button";
-import { Plus, Loader2, Lock } from 'lucide-react';
+import { Plus, Loader2, Lock, Grid3X3 } from 'lucide-react';
+import Link from "next/link";
 
 export interface Todo {
   id: string;
@@ -15,6 +16,9 @@ export interface Todo {
   completed: boolean;
   priority: number; // 1=low, 2=medium, 3=high
   category?: string;
+  urgency?: number;
+  importance?: number;
+  matrix_quadrant?: "do_first" | "schedule" | "delegate" | "do_later";
   dueDate?: Date;
   createdAt: Date;
   updatedAt: Date;
@@ -35,11 +39,14 @@ export default function DashboardPage() {
         
         if (data && Array.isArray(data.todos)) {
           const processedTodos = data.todos.map((todo: any) => ({
-            ...todo,
-            createdAt: new Date(todo.createdAt),
-            updatedAt: new Date(todo.updatedAt),
-            dueDate: todo.dueDate ? new Date(todo.dueDate) : null,
-          }));
+          ...todo,
+          createdAt: new Date(todo.createdAt),
+          updatedAt: new Date(todo.updatedAt),
+          dueDate: todo.dueDate ? new Date(todo.dueDate) : null,
+          urgency: todo.urgency || 0,
+          importance: todo.importance || 0,
+          matrix_quadrant: todo.matrix_quadrant || null,
+        }));
           setTodos(processedTodos);
         } else {
           setTodos([]);
@@ -60,6 +67,9 @@ export default function DashboardPage() {
     description?: string;
     priority?: number;
     category?: string;
+    urgency?: number;
+    importance?: number;
+    matrix_quadrant?: "do_first" | "schedule" | "delegate" | "do_later";
     dueDate?: Date;
   }) => {
     try {
@@ -189,8 +199,8 @@ export default function DashboardPage() {
           </div>
           <UserProfile />
         </div>
-        {/* Add Todo Button */}
-        <div className="mb-8">
+        {/* Action Buttons */}
+        <div className="mb-8 flex flex-wrap gap-4">
           <Button
             onClick={() => setShowAddTodo(!showAddTodo)}
             className="bg-primary hover:bg-primary-dark text-primary-foreground font-semibold text-lg px-8 py-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-250 hover:scale-102"
@@ -198,6 +208,18 @@ export default function DashboardPage() {
           >
             <Plus className="w-6 h-6 mr-3" />
             {showAddTodo ? 'Cancel' : 'Add New Task'}
+          </Button>
+          
+          <Button
+            asChild
+            variant="outline"
+            className="font-semibold text-lg px-8 py-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-250 hover:scale-102"
+            size="lg"
+          >
+            <Link href="/matrix" className="flex items-center">
+              <Grid3X3 className="w-6 h-6 mr-3" />
+              Matrix View
+            </Link>
           </Button>
         </div>
 

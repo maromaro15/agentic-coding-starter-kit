@@ -18,6 +18,9 @@ interface AddTodoProps {
     description?: string;
     priority?: number;
     category?: string;
+    urgency?: number;
+    importance?: number;
+    matrix_quadrant?: "do_first" | "schedule" | "delegate" | "do_later";
     dueDate?: Date;
   }) => Promise<any>;
   onCancel?: () => void;
@@ -32,6 +35,9 @@ export function AddTodo({ onAdd, onCancel }: AddTodoProps) {
     category: string;
     priority: number;
     reasoning: string;
+    urgency: number;
+    importance: number;
+    matrix_quadrant: "do_first" | "schedule" | "delegate" | "do_later";
   } | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showAiResult, setShowAiResult] = useState(false);
@@ -41,7 +47,7 @@ export function AddTodo({ onAdd, onCancel }: AddTodoProps) {
 
     setIsAnalyzing(true);
     try {
-      const response = await fetch("/api/ai/categorize", {
+      const response = await fetch("/api/ai/matrix-categorize", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title, description }),
@@ -72,6 +78,9 @@ export function AddTodo({ onAdd, onCancel }: AddTodoProps) {
         description: description.trim() || undefined,
         priority: aiSuggestion?.priority,
         category: aiSuggestion?.category,
+        urgency: aiSuggestion?.urgency,
+        importance: aiSuggestion?.importance,
+        matrix_quadrant: aiSuggestion?.matrix_quadrant,
         dueDate,
       });
 
@@ -116,6 +125,16 @@ export function AddTodo({ onAdd, onCancel }: AddTodoProps) {
       case 3: return "High";
       case 2: return "Medium";
       default: return "Low";
+    }
+  };
+
+  const getQuadrantLabel = (quadrant: "do_first" | "schedule" | "delegate" | "do_later") => {
+    switch (quadrant) {
+      case "do_first": return "🚨 Do First";
+      case "schedule": return "📅 Schedule";
+      case "delegate": return "👥 Delegate";
+      case "do_later": return "⏰ Do Later";
+      default: return "Unknown";
     }
   };
 
@@ -191,7 +210,7 @@ export function AddTodo({ onAdd, onCancel }: AddTodoProps) {
               ) : (
                 <Sparkles className="mr-2 h-5 w-5" />
               )}
-              AI Analysis
+              Matrix Analysis
             </Button>
           </div>
 
@@ -208,6 +227,9 @@ export function AddTodo({ onAdd, onCancel }: AddTodoProps) {
                   <Badge className={cn("rounded-full px-4 py-2 font-medium", getPriorityColor(aiSuggestion.priority))}>
                     {getPriorityLabel(aiSuggestion.priority)} Priority
                   </Badge>
+                  <Badge variant="secondary" className="rounded-full px-3 py-1 text-xs">
+                    {getQuadrantLabel(aiSuggestion.matrix_quadrant)}
+                  </Badge>
                 </div>
                 {showAiResult && (
                   <Badge variant="secondary" className="text-xs">
@@ -215,6 +237,45 @@ export function AddTodo({ onAdd, onCancel }: AddTodoProps) {
                   </Badge>
                 )}
               </div>
+              
+              {/* Matrix Scores */}
+              <div className="flex gap-4 text-sm">
+                <div className="flex items-center gap-2">
+                  <span className="text-muted-foreground">Urgency:</span>
+                  <div className="flex gap-1">
+                    {[1, 2, 3].map((level) => (
+                      <div
+                        key={level}
+                        className={cn(
+                          "w-3 h-3 rounded-full border",
+                          level <= aiSuggestion.urgency
+                            ? "bg-red-500 border-red-500"
+                            : "bg-gray-200 border-gray-300"
+                        )}
+                      />
+                    ))}
+                  </div>
+                  <span className="font-medium">{aiSuggestion.urgency}/3</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-muted-foreground">Importance:</span>
+                  <div className="flex gap-1">
+                    {[1, 2, 3].map((level) => (
+                      <div
+                        key={level}
+                        className={cn(
+                          "w-3 h-3 rounded-full border",
+                          level <= aiSuggestion.importance
+                            ? "bg-blue-500 border-blue-500"
+                            : "bg-gray-200 border-gray-300"
+                        )}
+                      />
+                    ))}
+                  </div>
+                  <span className="font-medium">{aiSuggestion.importance}/3</span>
+                </div>
+              </div>
+              
               <p className="text-sm text-muted-foreground leading-relaxed font-medium">
                 {aiSuggestion.reasoning}
               </p>
