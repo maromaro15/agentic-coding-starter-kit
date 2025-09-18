@@ -16,10 +16,10 @@ interface AddTodoProps {
   onAdd: (todo: {
     title: string;
     description?: string;
-    priority: number;
+    priority?: number;
     category?: string;
     dueDate?: Date;
-  }) => void;
+  }) => Promise<any>;
   onCancel?: () => void;
 }
 
@@ -33,6 +33,8 @@ export function AddTodo({ onAdd, onCancel }: AddTodoProps) {
     priority: number;
     reasoning: string;
   } | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showAiResult, setShowAiResult] = useState(false);
 
   const handleAnalyze = async () => {
     if (!title.trim()) return;
@@ -56,27 +58,48 @@ export function AddTodo({ onAdd, onCancel }: AddTodoProps) {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim()) return;
+    if (!title.trim() || isSubmitting) return;
 
-    onAdd({
-      title: title.trim(),
-      description: description.trim() || undefined,
-      priority: aiSuggestion?.priority || 1,
-      category: aiSuggestion?.category || undefined,
-      dueDate,
-    });
+    setIsSubmitting(true);
+    setShowAiResult(false);
 
-    // Reset form
-    setTitle("");
-    setDescription("");
-    setDueDate(undefined);
-    setAiSuggestion(null);
-    
-    // Close form if onCancel is provided
-    if (onCancel) {
-      onCancel();
+    try {
+      // Call onAdd which will trigger the API call with automatic AI categorization
+      const result = await onAdd({
+        title: title.trim(),
+        description: description.trim() || undefined,
+        priority: aiSuggestion?.priority,
+        category: aiSuggestion?.category,
+        dueDate,
+      });
+
+      // If the API returned AI suggestions, show them
+      if (result?.aiSuggestion) {
+        setAiSuggestion(result.aiSuggestion);
+        setShowAiResult(true);
+        
+        // Auto-hide the AI result after 5 seconds
+        setTimeout(() => {
+          setShowAiResult(false);
+        }, 5000);
+      }
+
+      // Reset form
+      setTitle("");
+      setDescription("");
+      setDueDate(undefined);
+      
+      // Don't reset aiSuggestion immediately to show the result
+      setTimeout(() => {
+        setAiSuggestion(null);
+      }, 5000);
+      
+    } catch (error) {
+      console.error('Failed to create todo:', error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -173,14 +196,24 @@ export function AddTodo({ onAdd, onCancel }: AddTodoProps) {
           </div>
 
           {aiSuggestion && (
-            <div className="p-6 bg-muted/50 rounded-lg space-y-4 border">
-              <div className="flex flex-wrap gap-3">
-                <Badge variant="outline" className="rounded-full px-4 py-2 font-medium">
-                  {aiSuggestion.category}
-                </Badge>
-                <Badge className={cn("rounded-full px-4 py-2 font-medium", getPriorityColor(aiSuggestion.priority))}>
-                  {getPriorityLabel(aiSuggestion.priority)} Priority
-                </Badge>
+            <div className={cn(
+              "p-6 bg-muted/50 rounded-lg space-y-4 border transition-all duration-500",
+              showAiResult ? "bg-green-50 border-green-200" : ""
+            )}>
+              <div className="flex items-center justify-between">
+                <div className="flex flex-wrap gap-3">
+                  <Badge variant="outline" className="rounded-full px-4 py-2 font-medium">
+                    {aiSuggestion.category}
+                  </Badge>
+                  <Badge className={cn("rounded-full px-4 py-2 font-medium", getPriorityColor(aiSuggestion.priority))}>
+                    {getPriorityLabel(aiSuggestion.priority)} Priority
+                  </Badge>
+                </div>
+                {showAiResult && (
+                  <Badge variant="secondary" className="text-xs">
+                    ✨ AI Applied
+                  </Badge>
+                )}
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed font-medium">
                 {aiSuggestion.reasoning}
@@ -191,9 +224,16 @@ export function AddTodo({ onAdd, onCancel }: AddTodoProps) {
           <Button 
             type="submit" 
             className="w-full h-12 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed" 
-            disabled={!title.trim()}
+            disabled={!title.trim() || isSubmitting}
           >
-            Add Task
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                Creating with AI...
+              </>
+            ) : (
+              'Add Task'
+            )}
           </Button>
         </form>
       </div>

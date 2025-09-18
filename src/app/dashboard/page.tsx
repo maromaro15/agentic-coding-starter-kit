@@ -81,9 +81,13 @@ export default function DashboardPage() {
         };
         setTodos((prev) => [...prev, newTodo]);
         setShowAddTodo(false);
+        
+        // Return the response data including AI suggestions
+        return response_data;
       }
     } catch (error) {
       console.error("Failed to add todo:", error);
+      throw error;
     }
   };
 

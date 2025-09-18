@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { openai } from "@ai-sdk/openai";
+import { google } from "@ai-sdk/google";
 import { generateObject } from "ai";
 import { z } from "zod";
 
@@ -20,10 +20,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const model = process.env.OPENAI_MODEL || "gpt-4o-mini";
+    const model = process.env.GOOGLE_GENERATIVE_AI_MODEL || "gemini-1.5-flash";
 
     const result = await generateObject({
-      model: openai(model),
+      model: google(model),
       schema: categorizationSchema,
       prompt: `Analyze this task and categorize it appropriately:
       
